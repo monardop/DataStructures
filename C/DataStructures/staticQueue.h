@@ -7,7 +7,7 @@ typedef struct
     int front, back;
 }Queue;
 
-Queue initialize();
+Queue initializeQueue();
 int spaceAvailable(Queue *queue);
 void dequeue(Queue *queue);
 void enqueue(Queue *queue, int number);

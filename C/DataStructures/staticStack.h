@@ -8,7 +8,7 @@ typedef struct
 }STACK;
 
 
-STACK initialize();
+STACK initializeStack();
 int is_full(STACK *stack);
 void push(STACK *stack, int number);
 void peack(STACK *stack);

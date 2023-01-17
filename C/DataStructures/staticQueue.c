@@ -2,7 +2,7 @@
 #include "staticQueue.h"
 
 
-Queue initialize()
+Queue initializeQueue()
 {
     Queue new;
     new.front = 0, new.back = 0;
@@ -33,7 +33,7 @@ int spaceAvailable(Queue *queue)
     {
         if(queue->back + 1 < queue->front)
         {
-            return queue->back + 1;
+            return queue->back;
         }
         else
         {
@@ -42,7 +42,7 @@ int spaceAvailable(Queue *queue)
     }
     else if (queue->back > queue->front)
     {
-        return queue->back + 1;
+        return queue->back;
     }
     else if(queue->back == 0 && queue->front == 0)
     {
@@ -53,16 +53,16 @@ int spaceAvailable(Queue *queue)
 
 void dequeue(Queue *queue)
 {
-    if(queue->front != 0)
-    {
-        printf("%d\n", queue->front);
-    } else
+    if(queue->front == 0 && queue->back == 0)
     {
         printf("Nothing to show\n");
     }
     
     if(queue->back != queue->front)
+    {
+        printf("%d\n", queue->vector[queue->front]);
         queue->front++;
+    }
 }
 
 
@@ -72,6 +72,7 @@ void enqueue(Queue *queue, int number)
     if(place != -1)
     {
         queue->vector[place] = number;
+        queue->back++;
     }
     else
     {

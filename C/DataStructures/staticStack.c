@@ -2,7 +2,7 @@
 #include "staticStack.h"
 
 
-STACK initialize()
+STACK initializeStack()
 {
     STACK new;
     new.top = 0;
