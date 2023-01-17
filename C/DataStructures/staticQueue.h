@@ -8,8 +8,9 @@ typedef struct
 }Queue;
 
 Queue initialize();
-void dequeue();
-void enqueue();
+int spaceAvailable(Queue *queue);
+void dequeue(Queue *queue);
+void enqueue(Queue *queue, int number);
 
 
 #endif // STATICQUEUE_H_INCLUDED
