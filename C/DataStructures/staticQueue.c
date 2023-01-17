@@ -44,16 +44,37 @@ int spaceAvailable(Queue *queue)
     {
         return queue->back + 1;
     }
+    else if(queue->back == 0 && queue->front == 0)
+    {
+        return 0;
+    }
 }
 
 
 void dequeue(Queue *queue)
 {
-
+    if(queue->front != 0)
+    {
+        printf("%d\n", queue->front);
+    } else
+    {
+        printf("Nothing to show\n");
+    }
+    
+    if(queue->back != queue->front)
+        queue->front++;
 }
 
 
 void enqueue(Queue *queue, int number)
 {
-
+    int place = spaceAvailable(queue);
+    if(place != -1)
+    {
+        queue->vector[place] = number;
+    }
+    else
+    {
+        printf("Your queue is full\n");
+    }
 }
