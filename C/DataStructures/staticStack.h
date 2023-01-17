@@ -10,9 +10,9 @@ typedef struct
 
 STACK initialize();
 int is_full(STACK stack);
-int push(STACK stack);
+void push(STACK stack, int number);
 void peack(STACK stack);
-int pop(STACK stack);
+void pop(STACK stack);
 
 
 #endif // STATICSTACK_H_INCLUDED
