@@ -1,28 +1,14 @@
 #include <stdio.h>
+#include "staticStack.h"
 
-struct stack
+
+STACK initialize()
 {
-    int vector[10];
-    void *top;
-};
+    STACK new;
+    new.top = &new.vector[0];
 
-
-//Callbacks
-void initialize();
-
-int push();
-void peack();
-int pop();
-
-
-int main()
-{
-
+    return new;
 }
 
 
-void initialize()
-{
-
-}
 
