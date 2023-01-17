@@ -6,23 +6,22 @@ STACK initialize()
 {
     STACK new;
     new.top = 0;
-
     return new;
 }
 
 
-int is_full(STACK stack)
+int is_full(STACK *stack)
 {
-    return stack.top + 1 == 10; 
+    return stack->top + 1 == 10;
 }
 
 
-void push(STACK stack, int number)
+void push(STACK *stack, int number)
 {
     if(!is_full(stack))
     {
-        stack.top++;
-        stack.vector[stack.top] = number;
+        stack->top++;
+        stack->vector[stack->top] = number;
     }
     else
     {
@@ -31,14 +30,21 @@ void push(STACK stack, int number)
 }
 
 
-void peack(STACK stack)
+void peack(STACK *stack)
 {
-    printf("%d", stack.vector[stack.top]);
+    printf("%d\n", stack->vector[stack->top]);
 }
 
 
-void pop(STACK stack)
+void pop(STACK *stack)
 {
-    peack(stack);
-    stack.top--;
+    if(stack->top != 0)
+    {
+        peack(stack);
+        stack->top--;
+    }
+    else
+    {
+        printf("Stack empty.\n");
+    }
 }
