@@ -1,0 +1,18 @@
+# depslib dependency file v1.0
+1673989253 source:c:\users\user\desktop\datastructures\c\datastructures\staticstack.c
+	<stdio.h>
+	"staticStack.h"
+
+1673989260 c:\users\user\desktop\datastructures\c\datastructures\staticstack.h
+
+1673990820 source:c:\users\user\desktop\datastructures\c\datastructures\main.c
+	<stdio.h>
+	<stdlib.h>
+	"staticQueue.h"
+
+1673990486 c:\users\user\desktop\datastructures\c\datastructures\staticqueue.h
+
+1673991121 source:c:\users\user\desktop\datastructures\c\datastructures\staticqueue.c
+	<stdio.h>
+	"staticQueue.h"
+
