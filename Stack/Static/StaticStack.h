@@ -9,4 +9,12 @@
         int top;
     }dsStack;
 
+    void newStack(dsStack *);
+    int isFull(const dsStack *, unsigned );
+    int isEmpty(const dsStack *);
+    int append(dsStack *, const void*, unsigned);
+    int pop(dsStack *, void *, unsigned);
+    void clear(dsStack *);
+    int peek(const dsStack *, void *, unsigned);
+    
 #endif
