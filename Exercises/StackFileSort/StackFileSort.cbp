@@ -31,9 +31,21 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="../../Stack/Dynamic/DynamicStack.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../Stack/Dynamic/DynamicStack.h" />
+		<Unit filename="../../Utilities/utilities.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../Utilities/utilities.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="stackSorting.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="stackSorting.h" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>
