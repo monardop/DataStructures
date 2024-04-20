@@ -4,6 +4,10 @@
     #include <stdlib.h>
     #include "../../Utilities/utilities.h"
 
-    typedef tNode *dsQueue;
+    typedef struct
+    {
+        tNode *head;
+        tNode *rear;
+    }dsQueue;
 
 #endif

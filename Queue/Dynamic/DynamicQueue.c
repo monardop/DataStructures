@@ -2,13 +2,13 @@
 
 void newQueue(dsQueue *pQueue)
 {
-   *pQueue = NULL;
+   pQueue->head = NULL;
 }
 
 
 int isEmpty(const dsQueue *pQueue)
 {
-    return *pQueue == NULL;
+    return pQueue->head == NULL;
 }
 
 
@@ -20,22 +20,22 @@ int isFull(const dsQueue* pQueue, unsigned dataSize)
 
 void clear(dsQueue *pQueue)
 {
-    tNode *del = *pQueue;
-    *pQueue = del->next;
+    tNode *del = pQueue->head;
+    pQueue->head = del->next;
 
-    while (*pQueue)
+    while (pQueue->head)
     {
         free(del->data);
         free(del);
-        del = *pQueue;
-        *pQueue = del->next;
+        del = pQueue->head;
+        pQueue->head = del->next;
     }
 }
 
 
 int enqueue(dsQueue *pQueue, const void *data, unsigned dataSize)
 {
-    tNode *new, *auxNode;
+    tNode *new;
     
     if ((new = (tNode *)malloc(sizeof(tNode))) == NULL || 
         (new->data = malloc(dataSize)) == NULL)
@@ -44,18 +44,11 @@ int enqueue(dsQueue *pQueue, const void *data, unsigned dataSize)
         return NO_SPACE;
     }
 
-
     memoryCopy(new->data, data, dataSize);
     new->dataSize = dataSize;
 
-    auxNode = *pQueue;
-
-    while (auxNode->next)
-    {
-        auxNode = auxNode->next;
-    }
-
-    auxNode->next = new;
+    pQueue->rear->next = new;
+    pQueue->rear = new;
 
     return OK;
 }
@@ -65,13 +58,13 @@ int dequeue(dsQueue *pQueue, void *data, unsigned dataSize)
 {
     tNode *del;
 
-    if(!*pQueue)
+    if(!pQueue->head)
         return EMPTY; 
 
-    memoryCopy(data,(*pQueue)->data, MIN(dataSize, (*pQueue)->dataSize));
+    memoryCopy(data,pQueue->head->data, MIN(dataSize, pQueue->head->dataSize));
 
-    del = *pQueue;
-    *pQueue = del->next;
+    del = pQueue->head;
+    pQueue->head = del->next;
 
     free(del->data);
     free(del);
@@ -82,10 +75,10 @@ int dequeue(dsQueue *pQueue, void *data, unsigned dataSize)
 
 int peek(const dsQueue *pQueue, void *data, unsigned dataSize)
 {
-    if(!*pQueue)
+    if(!pQueue->head)
         return EMPTY;
 
-    memoryCopy(data, (*pQueue)->data, MIN(dataSize, (*pQueue)->dataSize));
-
+    memoryCopy(data, pQueue->head->data, MIN(dataSize, pQueue->head->dataSize));
+    
     return OK;
 }
