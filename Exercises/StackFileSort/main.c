@@ -1,26 +1,42 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "../../Stack/Dynamic/DynamicStack.h"
+#include "stackSorting.h"
 
+int testing(char *, char *);
 
 
 int main()
 {
-    printf("Hello world!\n");
+    int errors = 0;
+    printf("Executing testing:\n");
+    errors += testing("txtFiles/Case1.txt", "Testing case1:\n");
+    errors += testing("txtFiles/Case2.txt", "Testing case2:\n");
+    printf("All cases done! %d errors", errors);
     return 0;
 }
 
-int case1(void)
+int testing(char* fileName, char *msj)
 {
-    int vec[] = {4, 10, 16, 17, 18, 19, 29, 31, 45, 51, 52, 
-                        53, 55, 59, 70, 85, 86, 89, 90, 93};
-    
-    
-}
+    dsStack sortedStack;
+    int top, lastTop;
 
-int case2(void)
-{
-    int vec[] = {0, 5, 6, 8, 12, 29, 31, 32, 36, 41, 42, 50, 
-                             57, 63, 68, 75, 87, 90, 93, 99};
-    
+    newStack(&sortedStack);
+    stackSorting(&sortedStack, fileName);
+
+    pop(&sortedStack, &lastTop, sizeof(int));
+
+    printf(msj);
+    for (int i = 0; i < 20; i++)
+    {
+        pop(&sortedStack, &top, sizeof(int));
+        if(top > lastTop)
+        {
+             printf("\t\t Not sorted.\n");
+             clear(&sortedStack);
+             return 1;
+        }
+        lastTop = top;
+    }
+    printf("\t\t OK\n");
+    return 0;
 }
