@@ -5,4 +5,6 @@
     #include <time.h>
     #include <stdio.h>
 
+    void processLog();
+
 #endif // BANKSIMULATION_H
