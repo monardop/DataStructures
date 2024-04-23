@@ -18,7 +18,7 @@ int isFull(const dsQueue* pQueue, unsigned dataSize)
 }
 
 
-void clear(dsQueue *pQueue)
+void clearQueue(dsQueue *pQueue)
 {
     tNode *del = pQueue->head;
     pQueue->head = del->next;
