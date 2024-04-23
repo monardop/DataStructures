@@ -39,6 +39,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="../../Utilities/utilities.h" />
+		<Unit filename="ExpressionAnalysis.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="expressionAnalysis.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
