@@ -11,7 +11,7 @@
     int isEmpty(const dsStack *);
     int append(dsStack *, const void*, unsigned);
     int pop(dsStack *, void *, unsigned);
-    void clear(dsStack *);
+    void clearStack(dsStack *);
     int peek(const dsStack *, void *, unsigned);
     
 #endif 

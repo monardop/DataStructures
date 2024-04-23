@@ -52,7 +52,7 @@ int pop(dsStack *pp, void *data, unsigned dataSize){
 }
 
 
-void clear(dsStack *pp){
+void clearStack(dsStack *pp){
     tNode *delNode = *pp;
     *pp = delNode->next;
 
