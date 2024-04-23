@@ -32,7 +32,7 @@ int testing(char* fileName, char *msj)
         if(top > lastTop)
         {
              printf("\t\t Not sorted.\n");
-             clear(&sortedStack);
+             clearStack(&sortedStack);
              return 1;
         }
         lastTop = top;
