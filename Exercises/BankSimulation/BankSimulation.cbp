@@ -31,6 +31,18 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="../../Queue/Dynamic/DynamicQueue.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../Queue/Dynamic/DynamicQueue.h" />
+		<Unit filename="../../Utilities/utilities.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../Utilities/utilities.h" />
+		<Unit filename="bankSimulation.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="bankSimulation.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>

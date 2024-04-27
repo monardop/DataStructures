@@ -17,60 +17,64 @@ int nextCustomer()
     return vec[randomNumber];
 }
 
-int simulation(dsQueue *queue, int *peopleServed)
+int simulation(int *peopleServed)
 {
+    dsQueue queue;
     int nextPerson, onProcess;
     int minutes = 0, elapsedTime; 
 
+    newQueue(&queue);
+
     // first person arrived
     onProcess = waitingTime();
-    enqueue(queue, &onProcess, sizeof(int));
+    enqueue(&queue, &onProcess, sizeof(int));
     nextPerson = nextCustomer();
 
-    while (minutes < MAX_TIME)
+    while (minutes < MAX_TIME && !isEmpty(&queue))
     {
         if(onProcess <= 0)
         {
-            dequeue(queue, &onProcess, sizeof(int));
+            dequeue(&queue, &onProcess, sizeof(int));
             (*peopleServed)++;
         }
         
         if(nextPerson <= 0)
         {
             nextPerson = waitingTime();
-            enqueue(queue, &nextPerson, sizeof(int));
+            enqueue(&queue, &nextPerson, sizeof(int));
             nextPerson = nextCustomer();
         }
 
-        peek(queue, &onProcess, sizeof(int));
+        peek(&queue, &onProcess, sizeof(int));
         elapsedTime = MIN(onProcess, nextPerson);
         onProcess -= elapsedTime;
         nextPerson -= elapsedTime;
         minutes += elapsedTime;
     }
+
+    clearQueue(&queue);
     return minutes;
 }
 
 void processLog()
 {
-    dsQueue queue;
     int peopleServed, totalServed, elapsedTime, totalTime; 
 
     totalServed = 0;
     peopleServed = 0;
     totalTime = 0;
 
+
     for(int i = 0; i < 5; i++)
     {
-        elapsedTime = simulation(&queue, &peopleServed);
-        printf("%d people were treated in %d minutes", peopleServed, elapsedTime);
-        clearQueue(&queue);
+        elapsedTime = simulation(&peopleServed);
+        printf("%d people were treated in %d minutes\n", peopleServed, elapsedTime);
         totalServed += peopleServed;
         peopleServed = 0;
         totalTime += elapsedTime;
     }
 
-    printf("%d people were treated in %d minutes", totalServed, totalTime);
+    printf("\n%d people were treated in %d minutes\n", totalServed, totalTime);
 
 }
 

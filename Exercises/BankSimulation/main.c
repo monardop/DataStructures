@@ -1,10 +1,8 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
+#include "bankSimulation.h"
 
 int main()
 {
     srand(time(NULL));
-    printf("Hello world!\n");
+    processLog();
     return 0;
 }
