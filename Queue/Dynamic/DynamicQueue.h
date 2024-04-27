@@ -6,8 +6,8 @@
 
     typedef struct
     {
-        tNode *head;
-        tNode *rear;
+        tNode *head, 
+              *rear;
     }dsQueue;
 
     void newQueue(dsQueue* );

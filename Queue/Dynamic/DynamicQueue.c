@@ -3,6 +3,7 @@
 void newQueue(dsQueue *pQueue)
 {
    pQueue->head = NULL;
+   pQueue->rear = NULL;
 }
 
 
@@ -20,16 +21,14 @@ int isFull(const dsQueue* pQueue, unsigned dataSize)
 
 void clearQueue(dsQueue *pQueue)
 {
-    tNode *del = pQueue->head;
-    pQueue->head = del->next;
-
     while (pQueue->head)
     {
+        tNode *del = pQueue->head;
+        pQueue->head = del->next;
         free(del->data);
         free(del);
-        del = pQueue->head;
-        pQueue->head = del->next;
     }
+    pQueue->rear = NULL;
 }
 
 
@@ -37,8 +36,8 @@ int enqueue(dsQueue *pQueue, const void *data, unsigned dataSize)
 {
     tNode *new;
     
-    if ((new = (tNode *)malloc(sizeof(tNode))) == NULL || 
-        (new->data = malloc(dataSize)) == NULL)
+    if ((new = (tNode *)malloc(sizeof(tNode)))== NULL || 
+        (new->data = malloc(dataSize))== NULL)
     {
         free(new);
         return NO_SPACE;
@@ -46,9 +45,14 @@ int enqueue(dsQueue *pQueue, const void *data, unsigned dataSize)
 
     memoryCopy(new->data, data, dataSize);
     new->dataSize = dataSize;
+    new->next = NULL;
 
-    pQueue->rear->next = new;
-    pQueue->rear = new;
+    if(pQueue->rear)
+        pQueue->rear->next = new;
+    else  
+        pQueue->head = new;
+    
+    pQueue->rear = new; 
 
     return OK;
 }
@@ -56,18 +60,19 @@ int enqueue(dsQueue *pQueue, const void *data, unsigned dataSize)
 
 int dequeue(dsQueue *pQueue, void *data, unsigned dataSize)
 {
-    tNode *del;
+    tNode *del = pQueue->head;
 
-    if(!pQueue->head)
+    if(!del)
         return EMPTY; 
-
-    memoryCopy(data,pQueue->head->data, MIN(dataSize, pQueue->head->dataSize));
-
-    del = pQueue->head;
+    
     pQueue->head = del->next;
+    memoryCopy(data,del->data, MIN(dataSize, del->dataSize));
 
     free(del->data);
     free(del);
+
+    if(!pQueue->head)
+        pQueue->rear = NULL;
 
     return OK;
 }
