@@ -11,7 +11,7 @@ void *memoryCopy(void *dest, const void *src,  unsigned size)
     return destination;
 }
 
-int memoryCompare(const char *elementA, const char *elementB, unsigned bytes)
+int memoryCompare(const void *elementA, const void *elementB, unsigned bytes)
  {
     const char *a = (const char *)elementA;
     const char *b = (const char *)elementB;

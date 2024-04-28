@@ -18,7 +18,7 @@
    typedef void (*print)(void *);
 
    void *memoryCopy(void *dst, const void *src, unsigned dataSize);
-   int memoryCompare(const char *a, const char *b, unsigned dataSize);
+   int memoryCompare(const void *a, const void *b, unsigned dataSize);
    int strLen(const char *str);
 
    //Comparing tools
