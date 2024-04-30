@@ -5,7 +5,7 @@ void newList(dsList *pList)
     *pList = NULL;
 }
 
-int isEmpty(dsList *pList)
+bool isEmpty(dsList *pList)
 {
     return *pList == NULL;
 }
@@ -159,8 +159,6 @@ void sortList(dsList *pList, cmp cmp)
         }
         i++;
     }
-    
-    
 }
 
 void printList(dsList *plist, print printFunc)
@@ -175,3 +173,113 @@ void printList(dsList *plist, print printFunc)
         auxNode = auxNode->next;
     }
 }
+
+void delNode(dsList *pList, tNode *del)
+{
+    tNode *pointer = *pList;
+
+    if (pointer == del)
+    {
+        *pList = pointer->next;
+        free(pointer->data);
+        free(pointer);
+        return;
+    }
+
+
+    while(pointer->next != del)
+    {
+        pointer = pointer->next;
+    }
+    pointer->next = del->next;
+    free(del->data);
+    free(del);
+    return;
+}
+
+int removeFirst(dsList *plist, void *data, unsigned dataSize)
+{
+    tNode *pointer = *plist;
+
+    while (pointer)
+    {
+        if(pointer->dataSize == dataSize)
+        {
+            if (memoryCompare(data, pointer->data, dataSize) )
+            {
+                delNode(plist, pointer);
+                return OK;
+            }
+        }
+        pointer = pointer->next;
+    }
+
+    return 0;
+}
+
+int removeAllOccurrences(dsList *plist, void *data, unsigned dataSize)
+{
+    tNode *pointer = *plist;
+    int occurrences = 0;
+
+    while (pointer)
+    {
+        if(pointer->dataSize == dataSize)
+        {
+            if (memoryCompare(data, pointer->data, dataSize) )
+            {
+                delNode(plist, pointer);
+                occurrences++;
+            }
+        }
+        pointer = pointer->next;
+    }
+
+    return occurrences;
+}
+
+int removeLastOccurrence(dsList *plist, void *data, unsigned dataSize)
+{
+    tNode *pointer = *plist;
+    tNode *del = NULL;
+
+    while (pointer)
+    {
+        if(pointer->dataSize == dataSize)
+        {
+            if (memoryCompare(data, pointer->data, dataSize) )
+            {
+                del = pointer;
+            }
+        }
+        pointer = pointer->next;
+    }
+
+    if(del)
+    {
+        delNode(plist, del);
+    }
+
+    return 0;
+}
+
+int removeIndex(dsList *pList, int index)
+{
+    tNode *pointer = *pList;
+    int i = 0;
+
+    while (pointer && i != index)
+    {
+        pointer = pointer->next;
+        i++;
+    }
+
+    if(pointer && index == i)
+    {
+        delNode(pList, pointer);
+    }
+    return 0;
+}
+
+
+
