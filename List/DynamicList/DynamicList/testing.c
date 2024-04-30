@@ -103,6 +103,74 @@ bool test_remove()
     return True;
 }
 
+bool test_indexInsert()
+{
+    int num[] = {0,1,2,3,4,5,6,7,8,9};
+    dsList list;
+    int new;
+
+    newList(&list);
+
+    for (int i = 0; i < 10; i++)
+    {
+        append(&list, num+i, sizeof(int));
+    }
+    printList(&list, intPrint);
+    
+    printf("\n Index 10 = 10: \n");
+    new = 10;
+    indexedInsert(&list, &new, sizeof(int), 10);
+    printList(&list, intPrint);
+
+    printf("\n Should not append, 15= 10 \n");
+    new = 10;
+    indexedInsert(&list, &new, sizeof(int), 15);
+    printList(&list, intPrint);
+
+    printf("\n Index 3 = 10: \n");
+    new = 10;
+    indexedInsert(&list, &new, sizeof(int), 3);
+    printList(&list, intPrint);
+
+    clearList(&list);
+
+    return True;
+}
+
+bool test_afterN()
+{
+    int num[] = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14};
+    dsList list;
+    int new;
+
+    newList(&list);
+
+    for (int i = 0; i < 10; i++)
+    {
+        append(&list, num+i, sizeof(int));
+    }
+    printList(&list, intPrint);
+
+    printf("\n  Removing 3 elements after 4.\n");
+    new = 4;
+    delnAfterElem(&list, &new, sizeof(int), intCompare, 3);
+    printList(&list, intPrint);
+
+    printf("\n  Removing 3 last elements.\n");
+    delnLast(&list, 3);
+    printList(&list, intPrint);
+
+    printf("\n  Total len: %d", listLen(&list));
+    printf("\n  Adding 6 elements.\n");
+    insertAfterElem(&list, &new, sizeof(int), intCompare, 6);
+    printf("\n  New len: %d", listLen(&list));
+
+    clearList(&list);
+
+    return OK;
+
+}
+
 
 void mainTesting(void)
 {
@@ -117,4 +185,10 @@ void mainTesting(void)
     printf(SEPARATOR);
     printf("\n\nTesting remove:\n");
     test_remove();
+    printf(SEPARATOR);
+    printf("\n\nTesting index insert:\n");
+    test_indexInsert();
+    printf(SEPARATOR);
+    printf("\n\nTesting after n func:\n");
+    test_afterN();
 }
