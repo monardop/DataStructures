@@ -6,8 +6,10 @@
 
    #define EMPTY 0
    #define NO_SPACE 0
+   #define NOT_FOUND 0
    #define OK 1
-   #define SEPARATOR "\n\t-------------------------------------------------------\t\n"
+   #define ERROR 0
+   #define SEPARATOR "\n\n\t-------------------------------------------------------\t\n"
 
    typedef struct sNodo{
         void *data;
@@ -17,6 +19,7 @@
 
    typedef int (*cmp)(void *, void *);
    typedef void (*print)(void *);
+   typedef void (*lambda)(tNode *);
    typedef enum {False, True}bool;
 
    void *memoryCopy(void *dst, const void *src, unsigned dataSize);
