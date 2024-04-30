@@ -31,9 +31,21 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="../../../Utilities/utilities.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../Utilities/utilities.h" />
+		<Unit filename="dynamicList.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="dynamicList.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="testing.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="testing.h" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>
