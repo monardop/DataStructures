@@ -6,19 +6,21 @@
 
     typedef tNode *dsList;
 
-    void newList(dsList *);
     bool isEmpty(dsList *);
+    void newList(dsList *);
     void clearList(dsList *);
+    void sortList(dsList *, cmp);
+    void printList(dsList *, print);
     int append(dsList *, void *, unsigned);
     int listLen(dsList *);
     int sortedInsert(dsList *, void *, unsigned, cmp);
-    void sortList(dsList *, cmp);
-    void printList(dsList *, print);
     int removeFirst(dsList *, void *, unsigned );
     int removeAllOccurrences(dsList *, void *, unsigned);
     int removeLastOccurrence(dsList *plist, void *data, unsigned dataSize);
     int removeIndex(dsList *pList, int index);
-
-
-    
+    int indexedInsert(dsList *pll, void *data, unsigned dataSize, int pos);
+    int delnAfterElem(dsList *pll, void *elem, unsigned dataSize, cmp cmp, int n);
+    int delnLast(dsList *pll, int n);
+    int insertAfterElem(dsList *pll, void *elem, unsigned dataSize, cmp cmp, int newElems);
+        
 #endif // DYNAMICLIST_H
