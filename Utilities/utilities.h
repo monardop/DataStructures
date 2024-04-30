@@ -7,6 +7,7 @@
    #define EMPTY 0
    #define NO_SPACE 0
    #define OK 1
+   #define SEPARATOR "\n\t-------------------------------------------------------\t\n"
 
    typedef struct sNodo{
         void *data;
@@ -16,6 +17,7 @@
 
    typedef int (*cmp)(void *, void *);
    typedef void (*print)(void *);
+   typedef enum {False, True}bool;
 
    void *memoryCopy(void *dst, const void *src, unsigned dataSize);
    int memoryCompare(const void *a, const void *b, unsigned dataSize);
