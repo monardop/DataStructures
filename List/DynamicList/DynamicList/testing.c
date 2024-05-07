@@ -12,7 +12,7 @@ bool test_append()
         append(&list, num+i, sizeof(int));
     }
     printList(&list, intPrint);
-    printf("\nList len: %d", listLen(&list));
+    printf("\n  List len: %d", listLen(&list));
     clearList(&list);
     return True;
 }
@@ -75,31 +75,31 @@ bool test_remove()
     {
         append(&testList, test+i, sizeof(int));
     }
-    
-    printf("Elements: %d\n", listLen(&testList));
+
+    printf("  Elements: %d\n", listLen(&testList));
     printList(&testList, intPrint);
 
-    printf("\nRemoving all 1's\n");
+    printf("\n  Removing all 1's\n");
     delNumber = 1;
     removeAllOccurrences(&testList, &delNumber, sizeof(int));
     printList(&testList, intPrint);
 
-    printf("\nRemoving the last 4\n");
+    printf("\n  Removing the last 4\n");
     delNumber = 4;
     removeLastOccurrence(&testList, &delNumber, sizeof(int));
     printList(&testList, intPrint);
 
-    printf("\nRemoving the first 9\n");
+    printf("\n  Removing the first 9\n");
     delNumber = 9;
     removeFirst(&testList, &delNumber, sizeof(int));
     printList(&testList, intPrint);
-    printf("\nRemoving the 3rd element\n");
- 
+    printf("\n  Removing the 3rd element\n");
+
     removeIndex(&testList, 3);
     printList(&testList, intPrint);
 
     clearList(&testList);
-    
+
     return True;
 }
 
@@ -116,18 +116,17 @@ bool test_indexInsert()
         append(&list, num+i, sizeof(int));
     }
     printList(&list, intPrint);
-    
-    printf("\n Index 10 = 10: \n");
+    printf("\n  Index 10 = 10: \n");
     new = 10;
     indexedInsert(&list, &new, sizeof(int), 10);
     printList(&list, intPrint);
 
-    printf("\n Should not append, 15= 10 \n");
+    printf("\n  Should not append, 15= 10 \n");
     new = 10;
     indexedInsert(&list, &new, sizeof(int), 15);
     printList(&list, intPrint);
 
-    printf("\n Index 3 = 10: \n");
+    printf("\n  Index 3 = 10: \n");
     new = 10;
     indexedInsert(&list, &new, sizeof(int), 3);
     printList(&list, intPrint);
@@ -171,24 +170,126 @@ bool test_afterN()
 
 }
 
+bool test_map()
+{
+    int num[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+    dsList list;
+
+    newList(&list);
+
+    for (int i = 0; i < 10; i++)
+    {
+        append(&list, num+i, sizeof(int));
+    }
+    printList(&list, intPrint);
+
+    printf("\n  Now testing map:\n");
+    mapC(&list, intSquare);
+    printList(&list, intPrint);
+
+    clearList(&list);
+
+    return True;
+}
+
+bool test_reduce()
+{
+    int num[] = {0,1,2,3,4,5,6,7,8,9};
+    int result = 0;
+    dsList list;
+    newList(&list);
+
+    for (int i = 0; i < 10; i++)
+    {
+        append(&list, num+i, sizeof(int));
+    }
+    printList(&list, intPrint);
+
+    reduce(&list, &result, redIntSum);
+    printf("\n  The result was %d", result);
+
+    clearList(&list);
+
+    return True;
+}
+
+bool test_filter()
+{
+    int num[] = {220,35,99,340,423,511,60,70,98,93};
+    int lessThan = 100;
+    dsList list;
+    newList(&list);
+
+    for (int i = 0; i < 10; i++)
+    {
+        append(&list, num+i, sizeof(int));
+    }
+    printList(&list, intPrint);
+    printf("\n  Using reduce:\n");
+
+    filter(&list, &lessThan, intLessThan);
+    printList(&list, intPrint);
+
+    clearList(&list);
+    return True;
+}
+
+bool test_map2()
+{
+    int num[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+    dsList list, list2;
+
+    newList(&list);
+    newList(&list2);
+
+    for (int i = 0; i < 10; i++)
+    {
+        append(&list, num+i, sizeof(int));
+    }
+    printList(&list, intPrint);
+
+    printf("\n  Now testing map:\n");
+    mapPython(&list, &list2, intSquare);
+    printList(&list, intPrint);
+    printf("\n");
+    printList(&list2, intPrint);
+
+    clearList(&list);
+    clearList(&list2);
+
+    return True;
+}
 
 void mainTesting(void)
 {
-    printf("Testing Append:\n");
+    printf("-Testing Append:\n");
     test_append();
     printf(SEPARATOR);
-    printf("\nTesting sortedInsert:\n");
+    printf("\n-Testing sortedInsert:\n");
     test_sortedAppend();
     printf(SEPARATOR);
-    printf("\nTesting sort:\n");
+    printf("\n-Testing sort:\n");
     test_sort();
     printf(SEPARATOR);
-    printf("\n\nTesting remove:\n");
+    printf("\n\n-Testing remove:\n");
     test_remove();
     printf(SEPARATOR);
-    printf("\n\nTesting index insert:\n");
+    printf("\n\n-Testing index insert:\n");
     test_indexInsert();
     printf(SEPARATOR);
-    printf("\n\nTesting after n func:\n");
+    printf("\n\n-Testing after n func:\n");
     test_afterN();
+    printf(SEPARATOR);
+    printf("\n\n-Testing reduce func:\n");
+    test_reduce();
+    printf(SEPARATOR);
+    printf("\n\n-Testing filter func:\n");
+    test_filter();
+    printf(SEPARATOR);
+    printf("\n\n-Testing mapC func:\n");
+    test_map();
+    printf(SEPARATOR);
+    printf("\n\n-Testing mapPython func:\n");
+    test_map2();
+
 }
