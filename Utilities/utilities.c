@@ -41,6 +41,22 @@ int intCompare(void *elemenA, void *elementB)
     return *a - *b;
 }
 
+int intBigger(void *elemenA, void *elementB)
+{
+    int *a = (int *)elemenA;
+    int *b = (int *)elementB;
+
+    return *a > *b;
+}
+
+int intLessThan(void *elemenA, void *elementB)
+{
+    int *a = (int *)elemenA;
+    int *b = (int *)elementB;
+
+    return *a < *b;
+}
+
 int strCompare(void *elementA, void *elementB)
 {
     char *a = (char *)elementA;
@@ -62,12 +78,71 @@ int strCompare(void *elementA, void *elementB)
     return comparison;
 }
 
+
+int strBigger(void *elementA, void *elementB)
+{
+    char *a = (char *)elementA;
+    char *b = (char *)elementB;
+
+    int comparison = 0;
+
+    while (*a)
+    {
+        comparison += *a;
+        a++;
+    }
+    while (*b)
+    {
+        comparison -= *b;
+        b++;
+    }
+
+    return comparison > 0;
+}
+
+int strLessThan(void *elementA, void *elementB)
+{
+    char *a = (char *)elementA;
+    char *b = (char *)elementB;
+
+    int comparison = 0;
+
+    while (*a)
+    {
+        comparison += *a;
+        a++;
+    }
+    while (*b)
+    {
+        comparison -= *b;
+        b++;
+    }
+
+    return comparison < 0;
+}
+
 int floatCompare(void *elementA, void *elementB)
 {
     float *a = (float *)elementA;
     float *b = (float *)elementB;
     return (int)(*a - *b);
 }
+
+int floatBigger(void *elementA, void *elementB)
+{
+    float *a = (float *)elementA;
+    float *b = (float *)elementB;
+    return (*a - *b) > 0;
+}
+
+int floatLessThan(void *elementA, void *elementB)
+{
+    float *a = (float *)elementA;
+    float *b = (float *)elementB;
+    return (*a - *b) < 0;
+}
+
+// ----------------------------------------------------------------------------
 
 void intPrint(void* number)
 {
