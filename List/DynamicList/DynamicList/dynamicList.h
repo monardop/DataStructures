@@ -26,5 +26,7 @@
     void mapPython(dsList *original, dsList *newList, lambda function);
     void filter(dsList *pll, void *cmpData, cmp cmp);
     void reduce(dsList *pll, void *result, reduceFunction func);
+    void removeNonDuplicate(dsList *pll, lambda func, cmp cmp);
+    int setType(dsList *pll, void *elem, unsigned dataSize, cmp cmp);
 
 #endif // DYNAMICLIST_H

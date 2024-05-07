@@ -260,6 +260,50 @@ bool test_map2()
     return True;
 }
 
+bool test_duplicate()
+{
+    int num[] = {0,2,2,2,4,5,3,10,20,20,10,5,19,30,22};
+    dsList list;
+
+    newList(&list);
+
+    for (int i = 0; i < 15; i++)
+    {
+        append(&list, num+i, sizeof(int));
+    }
+    printList(&list, intPrint);
+
+    printf("\n  Now testing remove:\n");
+    removeNonDuplicate(&list, intSquare, intCompare);
+    printList(&list, intPrint);
+
+
+    clearList(&list);
+
+    return True;
+}
+
+bool test_set()
+{
+    int num[] = {0,2,2,2,4,5,3,10,20,20,10,5,19,30,22};
+    dsList list;
+
+    newList(&list);
+    
+    printf("  List:\n");
+    for (int i = 0; i < 15; i++)
+    {
+        printf("\t %d", num[i]);
+        setType(&list, num+i, sizeof(int), intCompare);
+    }
+    printf("\n  Result:\n");
+    printList(&list, intPrint);
+
+    clearList(&list);
+
+    return True;
+}
+
 void mainTesting(void)
 {
     printf("-Testing Append:\n");
@@ -291,5 +335,10 @@ void mainTesting(void)
     printf(SEPARATOR);
     printf("\n\n-Testing mapPython func:\n");
     test_map2();
-
+    printf(SEPARATOR);
+    printf("\n\n-Testing duplicated func:\n");
+    test_duplicate();
+    printf(SEPARATOR);
+    printf("\n\n-Testing set func:\n");
+    test_set();
 }
