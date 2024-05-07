@@ -1,5 +1,6 @@
 #include "dynamicList.h"
 
+
 void newList(dsList *pList)
 {
     *pList = NULL;
@@ -218,8 +219,7 @@ int removeFirst(dsList *plist, void *data, unsigned dataSize)
 int removeAllOccurrences(dsList *plist, void *data, unsigned dataSize)
 {
     tNode *pointer = *plist;
-    int occurrences = 0;
-
+    
     while (pointer)
     {
         if(pointer->dataSize == dataSize)
@@ -227,13 +227,13 @@ int removeAllOccurrences(dsList *plist, void *data, unsigned dataSize)
             if (memoryCompare(data, pointer->data, dataSize) )
             {
                 delNode(plist, pointer);
-                occurrences++;
+                pointer = *plist;
             }
         }
         pointer = pointer->next;
     }
 
-    return occurrences;
+    return OK;
 }
 
 int removeLastOccurrence(dsList *plist, void *data, unsigned dataSize)
@@ -396,7 +396,6 @@ int delnLast(dsList *pll, int n)
         listPointer = auxDir;
     }
     
-    
     return OK;
 }
 
@@ -433,4 +432,60 @@ int insertAfterElem(dsList *pll, void *elem, unsigned dataSize, cmp cmp, int new
     listPointer->next = auxDir;
     
     return OK;
+}
+
+void mapC(dsList *pll, lambda function)
+{
+    tNode *listPointer; 
+
+    listPointer = *pll;
+
+    while (listPointer)
+    {
+        function(listPointer->data);
+        listPointer = listPointer->next;
+    }
+}
+
+void mapPython(dsList *original, dsList *secondList, lambda function)
+{
+    tNode *listPointer   = *original; 
+
+    while (listPointer)
+    {
+        append(secondList, listPointer->data, listPointer->dataSize);
+        listPointer = listPointer->next;  
+    }
+    
+    mapC(secondList, function);
+}
+
+void filter(dsList *pll, void *cmpData, cmp cmp)
+{
+    tNode *list = *pll;
+
+    while (list)
+    {
+
+        if (!cmp(cmpData, list->data))
+        {
+            delNode(pll,list);
+            list = *pll;
+        }
+        else
+        {
+            list = list->next;
+        }    
+    }
+}
+
+void reduce(dsList *pll, void *result, reduceFunction func)
+{
+    tNode *list = *pll;
+
+    while (list)
+    {
+        func(result, list->data);
+        list = list->next;
+    }  
 }

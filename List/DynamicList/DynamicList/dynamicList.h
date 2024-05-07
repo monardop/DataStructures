@@ -22,5 +22,9 @@
     int delnAfterElem(dsList *pll, void *elem, unsigned dataSize, cmp cmp, int n);
     int delnLast(dsList *pll, int n);
     int insertAfterElem(dsList *pll, void *elem, unsigned dataSize, cmp cmp, int newElems);
-        
+    void mapC(dsList *pll, lambda function);
+    void mapPython(dsList *original, dsList *newList, lambda function);
+    void filter(dsList *pll, void *cmpData, cmp cmp);
+    void reduce(dsList *pll, void *result, reduceFunction func);
+
 #endif // DYNAMICLIST_H
