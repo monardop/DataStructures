@@ -26,40 +26,32 @@ void clearList(dsList *plist)
 
 int append(dsList *plist, void *data, unsigned dataSize)
 {
-    tNode *pointer, *newNode;
+    tNode *new; 
 
-    if((newNode = (tNode *)malloc(sizeof(tNode))) == NULL ||
-               (newNode->data = malloc(dataSize)) == NULL)
+    while (*plist)
     {
-        free(newNode);
-        return NO_SPACE;
+        plist = &(*plist)->next;
     }
 
-    memoryCopy(newNode->data, data, dataSize);
-    newNode->dataSize = dataSize;
-    newNode->next = NULL;
-
-    if (!*plist)
+    if((new = (tNode *)malloc(sizeof(tNode))) == NULL || 
+        (new->data = malloc(dataSize)) == NULL)
     {
-        *plist = newNode;
-        newNode->next = NULL;
-        return OK;
+        free(new);
+        return ERROR;
     }
 
-    pointer = *plist;
-    while (pointer->next)
-    {
-        pointer = pointer->next;
-    }
+    memoryCopy(new->data, data, dataSize);
+    new->dataSize = dataSize;
+    new->next = NULL;
 
-    pointer->next = newNode;
+    *plist = new; 
 
     return OK;
 }
 
 int sortedInsert(dsList *plist, void* data, unsigned dataSize, cmp cmp)
 {
-    tNode *newNode, *pointer;
+    tNode *newNode;
 
     if((newNode = (tNode *)malloc(sizeof(tNode))) == NULL ||
                (newNode->data = malloc(dataSize)) == NULL)
@@ -67,44 +59,28 @@ int sortedInsert(dsList *plist, void* data, unsigned dataSize, cmp cmp)
         free(newNode);
         return NO_SPACE;
     }
-
     memoryCopy(newNode->data, data, dataSize);
     newNode->dataSize = dataSize;
 
-    if (!*plist)
+    while (*plist && cmp(data, (*plist)->data) > 0)
     {
-        *plist = newNode;
-        newNode->next = NULL;
-        return OK;
+        plist = &(*plist)->next;
     }
+    
+    newNode->next = *plist;
+    *plist = newNode;
 
-    pointer = *plist;
-    while (pointer->next)
-    {
-        tNode *auxNode = pointer->next;
-        if(cmp(pointer->data, data) < 0 && cmp(auxNode->data, data) >= 0)
-        {
-            newNode->next = auxNode;
-            pointer->next = newNode;
-            return OK;
-
-        }
-        pointer = auxNode;
-    }
-    pointer->next = newNode;
-    newNode->next = NULL;
     return OK;
 }
 
 int listLen(dsList *pList)
 {
-    tNode *pointer = *pList;
     int tam = 0;
 
-    while (pointer)
+    while (*pList)
     {
         tam++;
-        pointer = pointer->next;
+        pList = &(*pList)->next;
     }
     return tam;
 }
@@ -133,7 +109,7 @@ void nodeSwap(tNode *a, tNode *b)
 
 void sortList(dsList *pList, cmp cmp)
 {
-    tNode *actElement;
+    tNode *actElement, *nextNode;
     int sizeList, swapped, i;
 
     sizeList = listLen(pList);
@@ -147,7 +123,7 @@ void sortList(dsList *pList, cmp cmp)
     {
         swapped = 0;
         actElement = *pList;
-        tNode *nextNode = actElement->next;
+        nextNode = actElement->next;
         for(int j = 0; j < sizeList - i - 1; j++)
         {
             if(cmp(actElement->data,nextNode->data) > 0)
@@ -164,14 +140,13 @@ void sortList(dsList *pList, cmp cmp)
 
 void printList(dsList *plist, print printFunc)
 {
-    tNode *auxNode = *plist;
-    if(!auxNode)
+    if(!*plist)
         return;
 
-    while (auxNode)
+    while (*plist)
     {
-        printFunc(auxNode->data);
-        auxNode = auxNode->next;
+        printFunc((*plist)->data);
+        plist = &(*plist)->next;
     }
 }
 
@@ -196,92 +171,97 @@ void delNode(dsList *pList, tNode *del)
     free(del);
 }
 
-int removeFirst(dsList *plist, void *data, unsigned dataSize)
+int removeFirst(dsList *plist, void *data, unsigned dataSize, cmp cmp)
 {
-    tNode *pointer = *plist;
-
-    while (pointer)
+    tNode *aux;
+    while (*plist)
     {
-        if(pointer->dataSize == dataSize)
-        {
-            if (memoryCompare(data, pointer->data, dataSize) )
-            {
-                delNode(plist, pointer);
-                return OK;
-            }
+        if(cmp(data, (*plist)->data) == 0){
+            aux = (*plist)->next;
+            *plist = aux->next;
+
+            free(aux->data);
+            free(aux);
+            return OK;
         }
-        pointer = pointer->next;
+        plist = &(*plist)->next;
     }
 
-    return 0;
+    return NOT_FOUND;
 }
 
-int removeAllOccurrences(dsList *plist, void *data, unsigned dataSize)
+int removeAllOccurrences(dsList *plist, void *data, unsigned dataSize, cmp cmp)
 {
-    tNode *pointer = *plist;
+    tNode *aux;
+    int deleted = 0; 
 
-    while (pointer)
+    while (*plist)
     {
-        if(pointer->dataSize == dataSize)
-        {
-            if (memoryCompare(data, pointer->data, dataSize) )
-            {
-                delNode(plist, pointer);
-                pointer = *plist;
-            }
+        if(cmp(data, (*plist)->data) == 0){
+            aux = (*plist)->next;
+            *plist = aux->next;
+
+            free(aux->data);
+            free(aux);
+            deleted++;
         }
-        pointer = pointer->next;
+        plist = &(*plist)->next;
     }
 
-    return OK;
-}
-
-int removeLastOccurrence(dsList *plist, void *data, unsigned dataSize)
-{
-    tNode *pointer = *plist;
-    tNode *del = NULL;
-
-    while (pointer)
-    {
-        if(pointer->dataSize == dataSize)
-        {
-            if (memoryCompare(data, pointer->data, dataSize) )
-            {
-                del = pointer;
-            }
-        }
-        pointer = pointer->next;
-    }
-
-    if(del)
-    {
-        delNode(plist, del);
-    }
-
-    return 0;
+    return deleted;
 }
 
 int removeIndex(dsList *pList, int index)
 {
-    tNode *pointer = *pList;
-    int i = 0;
+    tNode *aux;
 
-    while (pointer && i != index)
+    while (*pList && index)
     {
-        pointer = pointer->next;
-        i++;
+        pList = &(*pList)->next;
+        index--;
     }
 
-    if(pointer && index == i)
+    if(*pList && !index)
     {
-        delNode(pList, pointer);
+        aux = *pList;
+        *pList = aux->next;
+
+        free(aux->data);
+        free(aux);
+        return 1;
     }
     return 0;
 }
 
-void removeDuplicates()
+int removeLastOccurrence(dsList *plist, void *data, unsigned dataSize, cmp cmp)
 {
+    tNode *pointer, *del;
+    
+    pointer = *plist;
 
+    while (pointer)  
+    {
+        if(cmp(data, pointer->data) == 0)
+        {
+            del = pointer;
+        }   
+        pointer = pointer->next;
+    }
+
+    if(del == NULL)
+        return NOT_FOUND;
+
+    while (*plist != del)
+    {
+        plist = &(*plist)->next;
+    }
+    
+    *plist = del->next;
+    free(del->data);
+    free(del);
+
+    return OK;
+    
 }
 
 int indexedInsert(dsList *pll, void *data, unsigned dataSize, int pos)
@@ -291,10 +271,11 @@ int indexedInsert(dsList *pll, void *data, unsigned dataSize, int pos)
         *if len(list) = n and pos > n => error
     */
     int listSize;
-    tNode *newElement, *auxPointer;
+    tNode *newElement, *aux;
 
 
     listSize = listLen(pll);
+    
     if(listSize == pos)
     {
         append(pll,data,dataSize);
@@ -314,13 +295,15 @@ int indexedInsert(dsList *pll, void *data, unsigned dataSize, int pos)
     memoryCopy(newElement->data,data, dataSize);
     newElement->dataSize = dataSize;
 
-    auxPointer = *pll;
-    for(int i = 0; i < pos - 1; i++)
+
+    for(int i = 0; i < pos; i++)
     {
-        auxPointer = auxPointer->next;
+        pll = &(*pll)->next;
     }
-    newElement->next = auxPointer->next;
-    auxPointer->next = newElement;
+    
+    aux = *pll;
+    *pll = newElement;
+    newElement->next = aux;
 
     return OK;
 }

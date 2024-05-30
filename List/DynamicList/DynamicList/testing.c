@@ -65,7 +65,7 @@ bool test_sort()
 
 bool test_remove()
 {
-    int test[] = {4,5,3,1,9,1,2,1,3,7,2,9,4,0,4};
+    int test[] = {4,5,3,1,9,1,4,1,3,7,2,9,4,0,2};
     dsList testList;
     int delNumber;
 
@@ -81,17 +81,17 @@ bool test_remove()
 
     printf("\n  Removing all 1's\n");
     delNumber = 1;
-    removeAllOccurrences(&testList, &delNumber, sizeof(int));
+    removeAllOccurrences(&testList, &delNumber, sizeof(int), intCompare);
     printList(&testList, intPrint);
 
     printf("\n  Removing the last 4\n");
     delNumber = 4;
-    removeLastOccurrence(&testList, &delNumber, sizeof(int));
+    removeLastOccurrence(&testList, &delNumber, sizeof(int), intCompare);
     printList(&testList, intPrint);
 
     printf("\n  Removing the first 9\n");
     delNumber = 9;
-    removeFirst(&testList, &delNumber, sizeof(int));
+    removeFirst(&testList, &delNumber, sizeof(int), intCompare);
     printList(&testList, intPrint);
     printf("\n  Removing the 3rd element\n");
 
@@ -289,7 +289,7 @@ bool test_set()
     dsList list;
 
     newList(&list);
-    
+
     printf("  List:\n");
     for (int i = 0; i < 15; i++)
     {

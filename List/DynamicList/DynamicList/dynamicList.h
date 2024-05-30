@@ -14,9 +14,9 @@
     int append(dsList *, void *, unsigned);
     int listLen(dsList *);
     int sortedInsert(dsList *, void *, unsigned, cmp);
-    int removeFirst(dsList *, void *, unsigned );
-    int removeAllOccurrences(dsList *, void *, unsigned);
-    int removeLastOccurrence(dsList *plist, void *data, unsigned dataSize);
+    int removeFirst(dsList *, void *, unsigned, cmp );
+    int removeAllOccurrences(dsList *, void *, unsigned, cmp);
+    int removeLastOccurrence(dsList *plist, void *data, unsigned dataSize, cmp);
     int removeIndex(dsList *pList, int index);
     int indexedInsert(dsList *pll, void *data, unsigned dataSize, int pos);
     int delnAfterElem(dsList *pll, void *elem, unsigned dataSize, cmp cmp, int n);
