@@ -1,6 +1,5 @@
 #include "dynamicList.h"
 
-
 void newList(dsList *pList)
 {
     *pList = NULL;
@@ -26,14 +25,14 @@ void clearList(dsList *plist)
 
 int append(dsList *plist, void *data, unsigned dataSize)
 {
-    tNode *new; 
+    tNode *new;
 
     while (*plist)
     {
         plist = &(*plist)->next;
     }
 
-    if((new = (tNode *)malloc(sizeof(tNode))) == NULL || 
+    if((new = (tNode *)malloc(sizeof(tNode))) == NULL ||
         (new->data = malloc(dataSize)) == NULL)
     {
         free(new);
@@ -44,7 +43,7 @@ int append(dsList *plist, void *data, unsigned dataSize)
     new->dataSize = dataSize;
     new->next = NULL;
 
-    *plist = new; 
+    *plist = new;
 
     return OK;
 }
@@ -66,7 +65,7 @@ int sortedInsert(dsList *plist, void* data, unsigned dataSize, cmp cmp)
     {
         plist = &(*plist)->next;
     }
-    
+
     newNode->next = *plist;
     *plist = newNode;
 
@@ -150,27 +149,6 @@ void printList(dsList *plist, print printFunc)
     }
 }
 
-void delNode(dsList *pList, tNode *del)
-{
-    tNode *pointer = *pList;
-
-    if (pointer == del)
-    {
-        *pList = pointer->next;
-        free(pointer->data);
-        free(pointer);
-        return;
-    }
-
-    while(pointer->next != del)
-    {
-        pointer = pointer->next;
-    }
-    pointer->next = del->next;
-    free(del->data);
-    free(del);
-}
-
 int removeFirst(dsList *plist, void *data, unsigned dataSize, cmp cmp)
 {
     tNode *aux;
@@ -193,7 +171,7 @@ int removeFirst(dsList *plist, void *data, unsigned dataSize, cmp cmp)
 int removeAllOccurrences(dsList *plist, void *data, unsigned dataSize, cmp cmp)
 {
     tNode *aux;
-    int deleted = 0; 
+    int deleted = 0;
 
     while (*plist)
     {
@@ -236,15 +214,15 @@ int removeIndex(dsList *pList, int index)
 int removeLastOccurrence(dsList *plist, void *data, unsigned dataSize, cmp cmp)
 {
     tNode *pointer, *del;
-    
+
     pointer = *plist;
 
-    while (pointer)  
+    while (pointer)
     {
         if(cmp(data, pointer->data) == 0)
         {
             del = pointer;
-        }   
+        }
         pointer = pointer->next;
     }
 
@@ -255,13 +233,13 @@ int removeLastOccurrence(dsList *plist, void *data, unsigned dataSize, cmp cmp)
     {
         plist = &(*plist)->next;
     }
-    
+
     *plist = del->next;
     free(del->data);
     free(del);
 
     return OK;
-    
+
 }
 
 int indexedInsert(dsList *pll, void *data, unsigned dataSize, int pos)
@@ -275,7 +253,7 @@ int indexedInsert(dsList *pll, void *data, unsigned dataSize, int pos)
 
 
     listSize = listLen(pll);
-    
+
     if(listSize == pos)
     {
         append(pll,data,dataSize);
@@ -300,7 +278,7 @@ int indexedInsert(dsList *pll, void *data, unsigned dataSize, int pos)
     {
         pll = &(*pll)->next;
     }
-    
+
     aux = *pll;
     *pll = newElement;
     newElement->next = aux;
@@ -310,73 +288,55 @@ int indexedInsert(dsList *pll, void *data, unsigned dataSize, int pos)
 
 int delnAfterElem(dsList *pll, void *elem, unsigned dataSize, cmp cmp, int n)
 {
-    tNode *listPointer, *auxDir, *lastElem;
-    int listSize = listLen(pll);
+    tNode *del;
+    int len;
 
-    listPointer = *pll;
-    while (listPointer && cmp(listPointer->data, elem) != 0 && listSize > 0)
+    while (*pll && cmp(elem, (*pll)->data) != 0)
     {
-        listPointer = listPointer->next;
-        listSize--;
+        pll = &(*pll)->next;
     }
+    pll = &(*pll)->next;
 
-    if(!listPointer)
-        return NOT_FOUND;
-
-    if(listSize - n < 0)
+    len = listLen(pll);
+    if(n > len)
         return ERROR;
 
-    auxDir = listPointer->next;
-    listPointer->next = NULL;
-    lastElem = listPointer;
-    listPointer = auxDir;
-
-    while (listPointer && n > 0)
+    for (int i = 0; i < n; i++)
     {
-        auxDir = listPointer->next;
-        free(listPointer->data);
-        free(listPointer);
-        listPointer = auxDir;
-        n--;
-    }
+        del = *pll;
+        *pll = del->next;
 
-    lastElem->next = listPointer;
+        free(del->data);
+        free(del);
+    }
 
     return OK;
 }
 
 int delnLast(dsList *pll, int n)
 {
-    tNode *listPointer, *auxDir;
+    tNode *del;
     int listSize;
 
-    if((listSize = listLen(pll)) < n)
+    listSize = listLen(pll);
+
+    if (listSize < n)
         return ERROR;
 
-    if(listSize == n)
-    {
-        clearList(pll);
-        return OK;
-    }
-
-    listPointer = *pll;
-    listSize -= n - 1;
+    listSize -= n;
 
     for (int i = 0; i < listSize; i++)
     {
-        listPointer = listPointer->next;
+        pll = &(*pll)->next;
     }
 
-    auxDir = listPointer->next;
-    listPointer->next = NULL;
-    listPointer = auxDir;
-
-    while (listPointer)
+    while (*pll)
     {
-        auxDir = listPointer->next;
-        free(listPointer->data);
-        free(listPointer);
-        listPointer = auxDir;
+        del = *pll;
+        *pll = del->next;
+
+        free(del->data);
+        free(del);
     }
 
     return OK;
@@ -384,148 +344,162 @@ int delnLast(dsList *pll, int n)
 
 int insertAfterElem(dsList *pll, void *elem, unsigned dataSize, cmp cmp, int newElems)
 {
-    tNode *listPointer, *auxDir, *new;
+    tNode *new;
 
-
-    listPointer = *pll;
-    while (listPointer && cmp(listPointer->data, elem) != 0)
+    while (*pll && cmp(elem, (*pll)->data) != 0)
     {
-        listPointer = listPointer->next;
+        pll = &(*pll)->next;
     }
 
-    if(!listPointer)
-        return NOT_FOUND;
+    if (*pll == NULL)
+        return ERROR;
+    else
+        pll = &(*pll)->next;
 
-    auxDir = listPointer->next;
-
-    for(int i = 0; i < newElems; i++)
+    for (int i = 0; i < newElems; i++)
     {
-        if((new = (tNode *)malloc(sizeof(tNode)))== NULL ||
-        (new->data = malloc(dataSize))== NULL)
+        if((new = (tNode *)malloc(sizeof(tNode))) == NULL ||
+        (new->data = malloc(dataSize)) == NULL)
         {
             free(new);
-            return NO_SPACE;
+            return ERROR;
         }
         new->dataSize = dataSize;
 
-        listPointer->next = new;
-        listPointer = new;
+        new->next = *pll;
+        *pll = new;
+        pll = &(*pll)->next;
     }
-
-    listPointer->next = auxDir;
 
     return OK;
 }
 
 void mapC(dsList *pll, lambda function)
 {
-    tNode *listPointer;
-
-    listPointer = *pll;
-
-    while (listPointer)
+    while (*pll)
     {
-        function(listPointer->data);
-        listPointer = listPointer->next;
+        function((*pll)->data);
+        pll = &(*pll)->next;
     }
 }
 
 void mapPython(dsList *original, dsList *secondList, lambda function)
 {
-    tNode *listPointer   = *original;
+    tNode *new;
 
-    while (listPointer)
+    while (*original)
     {
-        append(secondList, listPointer->data, listPointer->dataSize);
-        listPointer = listPointer->next;
+        if((new = (tNode *)malloc(sizeof(tNode))) == NULL ||
+        (new->data = malloc((*original)->dataSize)) == NULL)
+        {
+            free(new);
+            return;
+        }
+
+        *secondList = new;
+        new->next = NULL;
+        new->dataSize = (*original)->dataSize;
+        memoryCopy(new->data, (*original)->data, (*original)->dataSize);
+        function((*secondList)->data);
+        secondList = &(*secondList)->next;
+
+        original = &(*original)->next;
     }
 
-    mapC(secondList, function);
+
 }
 
 void filter(dsList *pll, void *cmpData, cmp cmp)
 {
-    tNode *list = *pll;
-
-    while (list)
+    tNode *del;
+    while(*pll)
     {
-
-        if (!cmp(cmpData, list->data))
+        if(!cmp(cmpData, (*pll)->data))
         {
-            delNode(pll,list);
-            list = *pll;
+            del = *pll;
+            *pll = del->next;
+            free(del->data);
+            free(del);
         }
         else
-        {
-            list = list->next;
-        }
+            pll = &(*pll)->next;
     }
 }
 
 void reduce(dsList *pll, void *result, reduceFunction func)
 {
-    tNode *list = *pll;
-
-    while (list)
+    while (*pll)
     {
-        func(result, list->data);
-        list = list->next;
+        func(result, (*pll)->data);
+        pll = &(*pll)->next;
     }
 }
 
-//Required function for the course.
-bool isDuplicated(dsList *pll, tNode* elem, cmp cmp)
+bool exists(dsList *pll, void *elem, cmp cmp)
 {
-    tNode *pointer = *pll;
-    while (pointer)
+    while (*pll)
     {
-        if(cmp(elem->data, pointer->data) == 0 && pointer != elem)
-        {
+        if (cmp(elem, (*pll)->data) == 0)
             return True;
-        }
-        pointer = pointer->next;
+        
+        pll = &(*pll)->next;
     }
-
     return False;
+}
+
+int count(dsList *pll, void *elem, cmp cmp)
+{
+    int count = 0;
+    while (*pll)
+    {
+        if(cmp(elem, (*pll)->data) == 0)
+            count++;
+        pll = &(*pll)->next;
+    }   
+    return count;
+
 }
 
 void removeNonDuplicate(dsList *pll, lambda func, cmp cmp)
 {
-    tNode *pointer, *aux;
-    pointer = *pll;
+    dsList auxList;
+    tNode *del;
 
-    while (pointer)
+    newList(&auxList);
+    
+    while (*pll)
     {
-        if(!isDuplicated(pll,pointer,cmp))
+        if(exists(&auxList, (*pll)->data, cmp))
+            pll = &(*pll)->next;
+        else if(count(pll,(*pll)->data,cmp) > 1)
         {
-            aux = pointer->next;
-            delNode(pll,pointer);
-            pointer = aux;
+            append(&auxList, (*pll)->data, (*pll)->dataSize);
+            pll = &(*pll)->next;
         }
         else
         {
-            pointer = pointer->next;
+            del = *pll;
+            *pll = del->next;
+            free(del->data);
+            free(del);
         }
     }
-    mapC(pll,func);
+    
+    clearList(&auxList);
 }
 
 int setType(dsList *plist, void *elem, unsigned dataSize, cmp cmp)
 {
     // if I use this function it is because I do not want duplicate information
 
-    tNode *pointer, *newNode;
+    tNode *newNode;
 
-    pointer = *plist;
-
-    while (pointer)
+    while (*plist)
     {
-        if(!cmp(elem, pointer->data))
-            return 0;
-        
-        pointer = pointer->next;
+        if(cmp(elem, (*plist)->data) == 0)
+            return ERROR;
+        plist = &(*plist)->next;
     }
-    
 
     if((newNode = (tNode *)malloc(sizeof(tNode))) == NULL ||
                (newNode->data = malloc(dataSize)) == NULL)
@@ -533,26 +507,14 @@ int setType(dsList *plist, void *elem, unsigned dataSize, cmp cmp)
         free(newNode);
         return NO_SPACE;
     }
-
     memoryCopy(newNode->data, elem, dataSize);
     newNode->dataSize = dataSize;
     newNode->next = NULL;
 
-    if (!*plist)
-    {
-        *plist = newNode;
-        newNode->next = NULL;
-        return OK;
-    }
-    
-    pointer = *plist;
-    while (pointer->next)
-    {
-        pointer = pointer->next;
-    }
-
-    pointer->next = newNode;
+    *plist = newNode;
 
     return OK;
-    
+
 }
+
+

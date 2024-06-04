@@ -161,13 +161,13 @@ bool test_afterN()
 
     printf("\n  Total len: %d", listLen(&list));
     printf("\n  Adding 6 elements.\n");
+    new = 3;
     insertAfterElem(&list, &new, sizeof(int), intCompare, 6);
     printf("\n  New len: %d", listLen(&list));
 
     clearList(&list);
 
     return OK;
-
 }
 
 bool test_map()
