@@ -18,7 +18,7 @@ int insert(tree *pTree, void* d, unsigned dataSize, cmp cmp)
 
     while(*pTree != NULL)
     {
-        comparacion = cmp((*pTree)->data, d);
+        comparacion = cmp(d, (*pTree)->data);
         if(comparacion == 0)
             return DUPLICATE;
         if(comparacion < 0)
@@ -43,21 +43,22 @@ int insert(tree *pTree, void* d, unsigned dataSize, cmp cmp)
     return OK;
 }
 
-int recursiveInsert(tree *pTree, void* d, unsigned dataSize, cmp cmp)
+int recursiveInsert(tree *pTree, void* data, unsigned dataSize, cmp cmp)
 {
-    int comparacion;
+    int comparison;
     tTreeNode *new; 
 
     if (*pTree != NULL)
     {
-        comparacion = cmp((*pTree)->data, d);
+        comparison = cmp(data, (*pTree)->data);
         
-        if(comparacion == 0)
+        if(comparison == 0)
             return DUPLICATE;
-        if(comparacion < 0)
-            return recursiveInsert(&(*pTree)->left, d, dataSize, cmp);
+        
+        if(comparison < 0)
+            return recursiveInsert(&(*pTree)->left, data, dataSize, cmp);
         else
-            return recursiveInsert(&(*pTree)->right, d, dataSize, cmp);
+            return recursiveInsert(&(*pTree)->right, data, dataSize, cmp);
     }
 
     if((new = (tTreeNode *)malloc(sizeof(tTreeNode))) == NULL ||
@@ -70,7 +71,7 @@ int recursiveInsert(tree *pTree, void* d, unsigned dataSize, cmp cmp)
     new->right = NULL;
     new->left = NULL;
     new->dataSize = dataSize;
-    memoryCopy(new->data, d, dataSize);
+    memoryCopy(new->data, data, dataSize);
 
     *pTree = new;
 
@@ -85,6 +86,7 @@ void clearTree(tree *ptree)
     clearTree(&(*ptree)->right);
     free((*ptree)->data);
     free(*ptree);
+    *ptree = NULL;
 }
 
 void printInOrder(tree *pTree, print print)
@@ -100,6 +102,7 @@ void printPostOrder(tree *pTree, print print)
 {
     if(*pTree == NULL)
         return;
+    
     printInOrder(&(*pTree)->left, print);
     printInOrder(&(*pTree)->right, print);
     print((*pTree)->data);
@@ -148,3 +151,22 @@ void returnMin(tree *ptree, void *data, unsigned dataSize)
         return;
     }
 }
+
+void delLeaf(tree *ptree)
+{
+    if(*ptree == NULL)
+        return;
+    
+    delLeaf(&(*ptree)->left);    
+    delLeaf(&(*ptree)->right);
+
+    if((*ptree)->left == NULL && (*ptree)->right == NULL)
+    {
+        free((*ptree)->data);
+        free(*ptree);
+        *ptree = NULL;
+    }
+
+    return;
+}
+
