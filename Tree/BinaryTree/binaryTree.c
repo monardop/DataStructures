@@ -113,3 +113,13 @@ void printPreOrder(tree *pTree, print print)
     printInOrder(&(*pTree)->left, print);
     printInOrder(&(*pTree)->right, print);
 }
+
+void map(tree *ptree, lambda function)
+{
+    if (*ptree == NULL)
+        return;
+    
+    function((*ptree)->data);
+    map(&(*ptree)->left, function);
+    map(&(*ptree)->right, function);
+}
