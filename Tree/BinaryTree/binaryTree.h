@@ -27,5 +27,8 @@
     void printPostOrder(tree *pTree, print print);
     void printPreOrder(tree *pTree, print print);
 
+    void returnMin(tree *ptree, void *data, unsigned dataSize);
+    void returnMax(tree *ptree, void *data, unsigned dataSize);
+    void map(tree *ptree, lambda function);
 
 #endif

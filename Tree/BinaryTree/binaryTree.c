@@ -123,3 +123,28 @@ void map(tree *ptree, lambda function)
     map(&(*ptree)->left, function);
     map(&(*ptree)->right, function);
 }
+
+void returnMax(tree *ptree, void *data, unsigned dataSize)
+{
+    if((*ptree)->right != NULL)
+    {
+        returnMax(&(*ptree)->right, data, dataSize);
+        
+    }else
+    {
+        memoryCopy(data, (*ptree)->data, MIN((*ptree)->dataSize, dataSize));
+        return;
+    }
+}
+
+void returnMin(tree *ptree, void *data, unsigned dataSize)
+{
+    if((*ptree)->left != NULL)
+    {
+        returnMax(&(*ptree)->left, data, dataSize);
+    }else
+    {
+        memoryCopy(data, (*ptree)->data, MIN((*ptree)->dataSize, dataSize));
+        return;
+    }
+}
