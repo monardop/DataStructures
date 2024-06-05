@@ -1,6 +1,4 @@
 #include "binaryTree.h"
-#include <stdlib.h>
-#include <string.h>
 
 
 void newTree(tree *new)
@@ -8,10 +6,15 @@ void newTree(tree *new)
     *new = NULL;
 }
 
-int insertarEnArbolIterativo(tree *pTree, void* d, unsigned dataSize, cmp cmp)
+bool isEmpty(tree *ptree)
+{
+    return *ptree == NULL;
+}
+
+int insert(tree *pTree, void* d, unsigned dataSize, cmp cmp)
 {
     int comparacion;
-    tNode *new; 
+    tTreeNode *new; 
 
     while(*pTree != NULL)
     {
@@ -24,8 +27,7 @@ int insertarEnArbolIterativo(tree *pTree, void* d, unsigned dataSize, cmp cmp)
             pTree = &(*pTree)->right;
     }
 
-    //pedir memoria
-    if((new = (tNode *)malloc(sizeof(tNode))) == NULL ||
+    if((new = (tTreeNode *)malloc(sizeof(tTreeNode))) == NULL ||
        (new->data = malloc(dataSize)) == NULL)
     {
         free(new);
@@ -35,29 +37,30 @@ int insertarEnArbolIterativo(tree *pTree, void* d, unsigned dataSize, cmp cmp)
     new->right = NULL;
     new->left = NULL;
     new->dataSize = dataSize;
-    memcpy(new->data, d, dataSize);
-    //conectar
+    memoryCopy(new->data, d, dataSize);
     *pTree = new;
 
     return OK;
 }
 
-int insertarEnArbolRecursivo(tree *pTree, void* d, unsigned dataSize, cmp cmp)
+int recursiveInsert(tree *pTree, void* d, unsigned dataSize, cmp cmp)
 {
-    int comparacion = cmp((*pTree)->data, d);
-    tNode *new; 
+    int comparacion;
+    tTreeNode *new; 
 
     if (*pTree != NULL)
     {
+        comparacion = cmp((*pTree)->data, d);
+        
         if(comparacion == 0)
             return DUPLICATE;
         if(comparacion < 0)
-            return insertarEnArbolRecursivo(&(*pTree)->left, d, dataSize, cmp);
+            return recursiveInsert(&(*pTree)->left, d, dataSize, cmp);
         else
-            return insertarEnArbolRecursivo(&(*pTree)->right, d, dataSize, cmp);
+            return recursiveInsert(&(*pTree)->right, d, dataSize, cmp);
     }
 
-    if((new = (tNode *)malloc(sizeof(tNode))) == NULL ||
+    if((new = (tTreeNode *)malloc(sizeof(tTreeNode))) == NULL ||
        (new->data = malloc(dataSize)) == NULL)
     {
         free(new);
@@ -67,10 +70,46 @@ int insertarEnArbolRecursivo(tree *pTree, void* d, unsigned dataSize, cmp cmp)
     new->right = NULL;
     new->left = NULL;
     new->dataSize = dataSize;
-    memcpy(new->data, d, dataSize);
+    memoryCopy(new->data, d, dataSize);
 
     *pTree = new;
 
     return OK;
 }
 
+void clearTree(tree *ptree)
+{
+    if(*ptree == NULL)
+        return;
+    clearTree(&(*ptree)->left);
+    clearTree(&(*ptree)->right);
+    free((*ptree)->data);
+    free(*ptree);
+}
+
+void printInOrder(tree *pTree, print print)
+{
+    if(*pTree == NULL)
+        return;
+    printInOrder(&(*pTree)->left, print);
+    print((*pTree)->data);
+    printInOrder(&(*pTree)->right, print);
+}
+
+void printPostOrder(tree *pTree, print print)
+{
+    if(*pTree == NULL)
+        return;
+    printInOrder(&(*pTree)->left, print);
+    printInOrder(&(*pTree)->right, print);
+    print((*pTree)->data);
+}
+
+void printPreOrder(tree *pTree, print print)
+{
+    if(*pTree == NULL)
+        return;
+    print((*pTree)->data);
+    printInOrder(&(*pTree)->left, print);
+    printInOrder(&(*pTree)->right, print);
+}
