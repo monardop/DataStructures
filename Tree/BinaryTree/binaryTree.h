@@ -31,4 +31,6 @@
     void returnMax(tree *ptree, void *data, unsigned dataSize);
     void map(tree *ptree, lambda function);
 
+    void delLeaf(tree *ptree);
+
 #endif
