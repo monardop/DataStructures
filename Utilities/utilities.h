@@ -1,7 +1,8 @@
 #ifndef UTILITIES_H_INCLUDED
 #define UTILITIES_H_INCLUDED
 
-   #define MIN(X, Y) (((X)<=(Y))?(X):(Y))
+   #define MIN(X, Y) (((X)<(Y))?(X):(Y))
+   #define MAX(X, Y) (((X)>(Y))?(X):(Y))
    #define STATIC_ELEMENTS 100
 
    #define EMPTY 0
