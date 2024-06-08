@@ -160,9 +160,13 @@ void test_balanced()
 
 void mainTest(void)
 {
-    printf("Testing recursive insert: \n");
+
     test_recursiveInsert();
+    printf(SEPARATOR);
     new_test();
+    printf(SEPARATOR);
     test_avl();
+    printf(SEPARATOR);
     test_complete();
+    printf(SEPARATOR);
 }
