@@ -256,3 +256,18 @@ int treeHeight(const tree *ptree)
     return 1 + MAX(hLeft, hRight);
 }
 
+bool isComplete(tree *tp)
+{
+    if(*tp == NULL)
+        return True;
+    
+    if(((*tp)->left == NULL && (*tp)->right == NULL) || 
+       ((*tp)->left != NULL && (*tp)->right != NULL))
+    {
+        return isComplete(&(*tp)->left) && isComplete(&(*tp)->right);
+    }
+    else
+    {
+        return False;
+    }
+}
