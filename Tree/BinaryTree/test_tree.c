@@ -48,21 +48,96 @@ int new_test()
     {
         recursiveInsert(&testTree, testing + i, sizeof(int), intCompare);
     }
-    printf("\n\n PostOrder: \n\t");
+    printf("\n\n Inorder: \n\t");
     printInOrder(&testTree, intPrint);
     
-
-
     clearTree(&testTree);
 
     return OK;
 }
 
+void test_avl()
+{
+    tree testTree1, testTree2;
+    int testNum1[] = {50, 17, 76, 9, 23, 54, 72, 67, 14, 19, 12};
+    int testNum2[] = {50, 17, 72, 12, 23, 54, 76, 9, 14, 19, 67};
+
+    // test False
+    newTree(&testTree1);
+    printf("\nTesting AVL false:\n");
+    for(int i = 0; i < 11; i++)
+    {
+        recursiveInsert(&testTree1, testNum1 + i, sizeof(int), intCompare);
+    }
+    if (avlTree(&testTree1) == False)
+    {
+        printf("\t\t OK\n");
+    }else
+    {
+        printf("\t\t ERROR\n");
+    }
+    clearTree(&testTree1);
+    
+    newTree(&testTree2);
+    printf("\nTesting AVL true:\n");
+    for(int i = 0; i < 11; i++)
+    {
+        recursiveInsert(&testTree2, testNum2 + i, sizeof(int), intCompare);
+    }
+    if (avlTree(&testTree2) == True)
+    {
+        printf("\t\t OK\n");
+    }else
+    {
+        printf("\t\t ERROR\n");
+    }
+    clearTree(&testTree2);
+    
+}
+
+void test_complete()
+{
+    tree testTree1, testTree2;
+    int testNum1[] = {50, 17, 72, 12, 23, 54, 76, 9, 14, 19, 67};
+    int testNum2[] = {100, 50, 200, 30, 60, 150, 280};
+
+    // test False
+    newTree(&testTree1);
+    printf("\nTesting complete -> false:\n");
+    for(int i = 0; i < 11; i++)
+    {
+        recursiveInsert(&testTree1, testNum1 + i, sizeof(int), intCompare);
+    }
+    if (avlTree(&testTree1) == False)
+    {
+        printf("\t\t OK\n");
+    }else
+    {
+        printf("\t\t ERROR\n");
+    }
+    clearTree(&testTree1);
+    
+    newTree(&testTree2);
+    printf("\nTesting complete -> true:\n");
+    for(int i = 0; i < 7; i++)
+    {
+        recursiveInsert(&testTree2, testNum2 + i, sizeof(int), intCompare);
+    }
+    if (avlTree(&testTree2) == True)
+    {
+        printf("\t\t OK\n");
+    }else
+    {
+        printf("\t\t ERROR\n");
+    }
+    clearTree(&testTree2);
+}
 
 void mainTest(void)
 {
     printf("Testing recursive insert: \n");
     test_recursiveInsert();
     new_test();
-
+    test_avl();
+    test_complete();
 }
