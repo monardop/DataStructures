@@ -40,6 +40,6 @@
     void getLvl(const tree *ptree, int lvl, print print);
     int treeHeight(const tree *ptree);
     bool isComplete(tree *tp);
-    
+    bool avlTree(tree *tp);
 
 #endif
