@@ -272,9 +272,22 @@ bool isComplete(tree *tp)
     }
 }
 
-
-
 bool avlTree(tree *tp)
 {
+    int hLeft, hRight;
 
+    if (*tp == NULL)
+    {
+        return True;
+    }
+    
+    hLeft = treeHeight((*tp)->left);
+    hRight = treeHeight((*tp)->right);
+
+    if( mod(hLeft - hRight) <= 1)
+    {
+        return avlTree(&(*tp)->left) && avlTree(&(*tp)->right);
+    }
+
+    return False;
 }
