@@ -261,15 +261,10 @@ bool isComplete(tree *tp)
     if(*tp == NULL)
         return True;
     
-    if(((*tp)->left == NULL && (*tp)->right == NULL) || 
-       ((*tp)->left != NULL && (*tp)->right != NULL))
-    {
+    if (((*tp)->left && (*tp)->right) || ((*tp)->left == NULL && (*tp)->right == NULL))
         return isComplete(&(*tp)->left) && isComplete(&(*tp)->right);
-    }
-    else
-    {
-        return False;
-    }
+
+    return False; 
 }
 
 bool avlTree(tree *tp)
