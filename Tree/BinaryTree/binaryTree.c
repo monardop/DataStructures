@@ -14,7 +14,7 @@ bool isEmpty(tree *ptree)
 int insert(tree *pTree, void* d, unsigned dataSize, cmp cmp)
 {
     int comparacion;
-    tTreeNode *new; 
+    tTreeNode *new;
 
     while(*pTree != NULL)
     {
@@ -46,15 +46,15 @@ int insert(tree *pTree, void* d, unsigned dataSize, cmp cmp)
 int recursiveInsert(tree *pTree, void* data, unsigned dataSize, cmp cmp)
 {
     int comparison;
-    tTreeNode *new; 
+    tTreeNode *new;
 
     if (*pTree != NULL)
     {
         comparison = cmp(data, (*pTree)->data);
-        
+
         if(comparison == 0)
             return DUPLICATE;
-        
+
         if(comparison < 0)
             return recursiveInsert(&(*pTree)->left, data, dataSize, cmp);
         else
@@ -102,9 +102,9 @@ void printPostOrder(tree *pTree, print print)
 {
     if(*pTree == NULL)
         return;
-    
-    printInOrder(&(*pTree)->left, print);
-    printInOrder(&(*pTree)->right, print);
+
+    printPostOrder(&(*pTree)->left, print);
+    printPostOrder(&(*pTree)->right, print);
     print((*pTree)->data);
 }
 
@@ -113,15 +113,15 @@ void printPreOrder(tree *pTree, print print)
     if(*pTree == NULL)
         return;
     print((*pTree)->data);
-    printInOrder(&(*pTree)->left, print);
-    printInOrder(&(*pTree)->right, print);
+    printPreOrder(&(*pTree)->left, print);
+    printPreOrder(&(*pTree)->right, print);
 }
 
 void map(tree *ptree, lambda function)
 {
     if (*ptree == NULL)
         return;
-    
+
     function((*ptree)->data);
     map(&(*ptree)->left, function);
     map(&(*ptree)->right, function);
@@ -132,7 +132,7 @@ void returnMax(tree *ptree, void *data, unsigned dataSize)
     if((*ptree)->right != NULL)
     {
         returnMax(&(*ptree)->right, data, dataSize);
-        
+
     }else
     {
         memoryCopy(data, (*ptree)->data, MIN((*ptree)->dataSize, dataSize));
@@ -144,7 +144,7 @@ void returnMin(tree *ptree, void *data, unsigned dataSize)
 {
     if((*ptree)->left != NULL)
     {
-        returnMax(&(*ptree)->left, data, dataSize);
+        returnMin(&(*ptree)->left, data, dataSize);
     }else
     {
         memoryCopy(data, (*ptree)->data, MIN((*ptree)->dataSize, dataSize));
@@ -152,21 +152,107 @@ void returnMin(tree *ptree, void *data, unsigned dataSize)
     }
 }
 
-void delLeaf(tree *ptree)
+int delLeaf(tree *ptree)
 {
     if(*ptree == NULL)
         return;
-    
-    delLeaf(&(*ptree)->left);    
-    delLeaf(&(*ptree)->right);
 
     if((*ptree)->left == NULL && (*ptree)->right == NULL)
     {
         free((*ptree)->data);
         free(*ptree);
         *ptree = NULL;
+        return 1; 
     }
 
-    return;
+    return delLeaf(&(*ptree)->left) + delLeaf(&(*ptree)->right);
+}
+
+int countLeaf(tree *ptree)
+{
+    if(*ptree == NULL)
+        return 0;
+
+    if((*ptree)->left == NULL && (*ptree)->right == NULL)
+    {
+        return 1;
+    }
+
+    return countLeaf(&(*ptree)->left) + countLeaf(&(*ptree)->right);
+}
+
+int countNodes(tree *ptree)
+{
+    if(*ptree == NULL)
+        return 0;
+
+    if((*ptree)->left == NULL && (*ptree)->right == NULL)
+    {
+        return 0;
+    }
+
+    return countNodes(&(*ptree)->left) + countNodes(&(*ptree)->right) + 1;
+}
+
+int leftChilds(tree *ptree)
+{
+    if(*ptree == NULL)
+        return 0;
+
+    return (leftChilds(&(*ptree)->left) + 1) - (leftChilds(&(*ptree)->right) + 1);
+}
+
+int clearTreeCount(tree *ptree)
+{
+    int cont;
+    if(*ptree == NULL)
+        return;
+    cont = clearTreeCount(&(*ptree)->left) + clearTreeCount(&(*ptree)->right);
+    free((*ptree)->data);
+    free(*ptree);
+    *ptree = NULL;
+
+    return cont + 1;
+}
+
+void getUpToLvl(const tree *ptree, int lvl, print print)
+{
+    if(*ptree == NULL)
+        return;
+
+    if(lvl >= 0)
+    {
+        getUpToLvl(&(*ptree)->left, lvl - 1, print);
+        print((*ptree)->data);
+        getUpToLvl(&(*ptree)->right, lvl - 1, print);
+    }
+}
+
+void getLvl(const tree *ptree, int lvl, print print)
+{
+    if(*ptree == NULL)
+        return;
+
+    if(lvl > 0)
+    {
+        getLvl(&(*ptree)->left, lvl - 1, print);
+        getLvl(&(*ptree)->right, lvl - 1, print);
+    }
+    if(lvl == 0)
+    {
+        print((*ptree)->data);
+    }
+}
+
+int treeHeight(const tree *ptree)
+{
+    int hLeft, hRight;
+    if(*ptree == NULL)
+        return 0;
+
+    hLeft = treeHeight((*ptree)->left);
+    hRight = treeHeight((*ptree)->right);
+
+    return 1 + MAX(hLeft, hRight);
 }
 
