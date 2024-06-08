@@ -250,8 +250,8 @@ int treeHeight(const tree *ptree)
     if(*ptree == NULL)
         return 0;
 
-    hLeft = treeHeight((*ptree)->left);
-    hRight = treeHeight((*ptree)->right);
+    hLeft = treeHeight(&(*ptree)->left);
+    hRight = treeHeight(&(*ptree)->right);
 
     return 1 + MAX(hLeft, hRight);
 }
@@ -281,8 +281,8 @@ bool avlTree(tree *tp)
         return True;
     }
     
-    hLeft = treeHeight((*tp)->left);
-    hRight = treeHeight((*tp)->right);
+    hLeft = treeHeight(&(*tp)->left);
+    hRight = treeHeight(&(*tp)->right);
 
     if( mod(hLeft - hRight) <= 1)
     {
