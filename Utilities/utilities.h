@@ -3,6 +3,7 @@
 
    #define MIN(X, Y) (((X)<(Y))?(X):(Y))
    #define MAX(X, Y) (((X)>(Y))?(X):(Y))
+   #define MOD(X) (X < 0)?((-X):(X))
    #define STATIC_ELEMENTS 100
 
    #define EMPTY 0

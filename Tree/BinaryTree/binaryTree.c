@@ -271,3 +271,10 @@ bool isComplete(tree *tp)
         return False;
     }
 }
+
+
+
+bool avlTree(tree *tp)
+{
+
+}
