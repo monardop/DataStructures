@@ -108,7 +108,7 @@ void test_complete()
     {
         recursiveInsert(&testTree1, testNum1 + i, sizeof(int), intCompare);
     }
-    if (avlTree(&testTree1) == False)
+    if (isComplete(&testTree1) == False)
     {
         printf("\t\t OK\n");
     }else
@@ -123,7 +123,7 @@ void test_complete()
     {
         recursiveInsert(&testTree2, testNum2 + i, sizeof(int), intCompare);
     }
-    if (avlTree(&testTree2) == True)
+    if (isComplete(&testTree2) == True)
     {
         printf("\t\t OK\n");
     }else
