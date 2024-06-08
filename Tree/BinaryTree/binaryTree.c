@@ -155,7 +155,7 @@ void returnMin(tree *ptree, void *data, unsigned dataSize)
 int delLeaf(tree *ptree)
 {
     if(*ptree == NULL)
-        return;
+        return 0;
 
     if((*ptree)->left == NULL && (*ptree)->right == NULL)
     {
@@ -206,7 +206,7 @@ int clearTreeCount(tree *ptree)
 {
     int cont;
     if(*ptree == NULL)
-        return;
+        return 0;
     cont = clearTreeCount(&(*ptree)->left) + clearTreeCount(&(*ptree)->right);
     free((*ptree)->data);
     free(*ptree);
