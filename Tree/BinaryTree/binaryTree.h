@@ -31,6 +31,15 @@
     void returnMax(tree *ptree, void *data, unsigned dataSize);
     void map(tree *ptree, lambda function);
 
-    void delLeaf(tree *ptree);
+    int delLeaf(tree *ptree);
+    int countLeaf(tree *ptree);
+    int countNodes(tree *ptree);
+    int leftChilds(tree *ptree);
+    int clearTreeCount(tree *ptree);
+    void getUpToLvl(const tree *ptree, int lvl, print print);
+    void getLvl(const tree *ptree, int lvl, print print);
+    int treeHeight(const tree *ptree);
+    bool isComplete(tree *tp);
+    
 
 #endif
