@@ -16,7 +16,7 @@
     #define DUPLICATE -1
 
     
-    void newTree(tree *new);
+    void newTree(tree *);
     bool isEmpty(tree *ptree);
     void clearTree(tree *ptree);
 
@@ -41,5 +41,6 @@
     int treeHeight(const tree *ptree);
     bool isComplete(tree *tp);
     bool avlTree(tree *tp);
+    void delNode(tree *tp, void *elem, cmp cmp);
 
 #endif
