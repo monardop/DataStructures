@@ -155,7 +155,7 @@ void returnMin(tree *ptree, void *data, unsigned dataSize)
 int delLeaf(tree *ptree)
 {
     if(*ptree == NULL)
-        return;
+        return 0;
 
     if((*ptree)->left == NULL && (*ptree)->right == NULL)
     {
@@ -206,7 +206,7 @@ int clearTreeCount(tree *ptree)
 {
     int cont;
     if(*ptree == NULL)
-        return;
+        return 0;
     cont = clearTreeCount(&(*ptree)->left) + clearTreeCount(&(*ptree)->right);
     free((*ptree)->data);
     free(*ptree);
@@ -250,8 +250,8 @@ int treeHeight(const tree *ptree)
     if(*ptree == NULL)
         return 0;
 
-    hLeft = treeHeight((*ptree)->left);
-    hRight = treeHeight((*ptree)->right);
+    hLeft = treeHeight(&(*ptree)->left);
+    hRight = treeHeight(&(*ptree)->right);
 
     return 1 + MAX(hLeft, hRight);
 }
@@ -261,20 +261,84 @@ bool isComplete(tree *tp)
     if(*tp == NULL)
         return True;
     
-    if(((*tp)->left == NULL && (*tp)->right == NULL) || 
-       ((*tp)->left != NULL && (*tp)->right != NULL))
-    {
+    if (((*tp)->left && (*tp)->right) || ((*tp)->left == NULL && (*tp)->right == NULL))
         return isComplete(&(*tp)->left) && isComplete(&(*tp)->right);
-    }
-    else
-    {
-        return False;
-    }
+
+    return False; 
 }
-
-
 
 bool avlTree(tree *tp)
 {
+    int hLeft, hRight;
 
+    if (*tp == NULL)
+    {
+        return True;
+    }
+    
+    hLeft = treeHeight(&(*tp)->left);
+    hRight = treeHeight(&(*tp)->right);
+
+    if( mod(hLeft - hRight) <= 1)
+    {
+        return avlTree(&(*tp)->left) && avlTree(&(*tp)->right);
+    }
+
+    return False;
+}
+
+tree *searchNode(tree *tp, void *elem, cmp compare)
+{
+    int comparison; 
+    while (*tp)
+    {
+        comparison = compare(elem, (*tp)->data);
+        if(comparison == 0)
+            return tp;
+        
+        if (comparison < 0)
+            tp = &(*tp)->left;
+        else
+            tp = &(*tp)->right;
+    }
+
+    return NULL;
+}
+
+void delNode(tree *tp, void *elem, cmp cmp)
+{
+    tTreeNode *delNode;
+    int leftBranch, rightBranch; 
+
+    tp = searchNode(tp, elem, cmp);
+    if(!*tp)
+        return;
+    
+    delNode = *tp;
+
+    leftBranch = treeHeight(&(*tp)->left);
+    rightBranch = treeHeight(&(*tp)->right);
+
+    free(delNode->data);
+    delNode->data = NULL;
+
+    if(rightBranch >= leftBranch)
+    {
+        tp = &(*tp)->right;
+        while ((*tp)->left)
+        {
+            tp = &(*tp)->left;
+        }  
+    }
+    else
+    {
+        tp = &(*tp)->left;
+        while ((*tp)->right)
+        {
+            tp = &(*tp)->right;
+        }  
+    }
+    delNode->data = (*tp)->data;
+    free(*tp);
+    *tp = NULL;
 }

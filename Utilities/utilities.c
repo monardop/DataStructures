@@ -161,3 +161,10 @@ void strPrint(void* string)
     char *x = (char *)string;
     printf("\t%s", x);
 }
+
+int mod(int x)
+{
+    if(x < 0)
+        return -x;
+    return x;
+}
