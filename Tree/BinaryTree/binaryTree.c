@@ -286,3 +286,59 @@ bool avlTree(tree *tp)
 
     return False;
 }
+
+tree *searchNode(tree *tp, void *elem, cmp compare)
+{
+    int comparison; 
+    while (*tp)
+    {
+        comparison = compare(elem, (*tp)->data);
+        if(comparison == 0)
+            return tp;
+        
+        if (comparison < 0)
+            tp = &(*tp)->left;
+        else
+            tp = &(*tp)->right;
+    }
+
+    return NULL;
+}
+
+void delNode(tree *tp, void *elem, cmp cmp)
+{
+    tTreeNode *delNode;
+    int leftBranch, rightBranch; 
+
+    tp = searchNode(tp, elem, cmp);
+    if(!*tp)
+        return;
+    
+    delNode = *tp;
+
+    leftBranch = treeHeight(&(*tp)->left);
+    rightBranch = treeHeight(&(*tp)->right);
+
+    free(delNode->data);
+    delNode->data = NULL;
+
+    if(rightBranch >= leftBranch)
+    {
+        tp = &(*tp)->right;
+        while ((*tp)->left)
+        {
+            tp = &(*tp)->left;
+        }  
+    }
+    else
+    {
+        tp = &(*tp)->left;
+        while ((*tp)->right)
+        {
+            tp = &(*tp)->right;
+        }  
+    }
+    delNode->data = (*tp)->data;
+    free(*tp);
+    *tp = NULL;
+}
