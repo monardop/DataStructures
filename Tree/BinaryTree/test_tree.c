@@ -2,7 +2,7 @@
 #include <stdio.h>
 
 void testMessage(char *msg, int result, int expected)
-{   
+{
     printf("\n%s\n", msg);
     if (result == expected)
     {
@@ -60,7 +60,7 @@ void new_test()
     }
     printf("\n\n Inorder: \n\t");
     printInOrder(&testTree, intPrint);
-    
+
     clearTree(&testTree);
 
 }
@@ -79,7 +79,7 @@ void test_avl()
     }
     testMessage("Testing AVL -> False",avlTree(&testTree1),False);
     clearTree(&testTree1);
-    
+
     for(int i = 0; i < 11; i++)
     {
         recursiveInsert(&testTree1, testNum2 + i, sizeof(int), intCompare);
@@ -109,7 +109,7 @@ void test_complete()
         printf("\t\t ERROR\n");
     }
     clearTree(&testTree1);
-    
+
     newTree(&testTree2);
     printf("\nTesting complete -> true:\n");
     for(int i = 0; i < 7; i++)
@@ -129,33 +129,26 @@ void test_complete()
 void test_balanced()
 {
     tree testTree;
-    int testNum1[] = {50, 17, 72, 12, 23, 54, 76, 9, 14, 19, 67}, // true
-        testNum2[] = {100, 50, 200, 30, 60, 150, 280}, // true
-        testNum3[] = {50, 17, 72, 12, 23, 54, 76, 9, 14, 19, 67, 3}; // false
+    int testNum1[] = {50, 17, 72, 12, 23, 54, 76, 9, 14, 19, 67};
+    int nro;
 
     newTree(&testTree);
-
 
     for (int i = 0; i < 11; i++)
     {
         recursiveInsert(&testTree, testNum1 + i, sizeof(int), intCompare);
     }
-    testMessage("Testing balanced -> True", avlTree(&testTree), True);
+    nro = 17;
+    printInOrder(&testTree, intPrint);
+    printf("\nDeleting 17:\n\n");
+    delNode(&testTree, &nro, intCompare);
+    printInOrder(&testTree, intPrint);
+    nro = 72;
+    printf("\nDeleting 72:\n\n");
+    delNode(&testTree, &nro, intCompare);
+    printInOrder(&testTree, intPrint);
     clearTree(&testTree);
 
-    for (int i = 0; i < 11; i++)
-    {
-        recursiveInsert(&testTree, testNum2 + i, sizeof(int), intCompare);
-    }
-    testMessage("Testing balanced -> True", avlTree(&testTree), True);
-    clearTree(&testTree);
-
-    for (int i = 0; i < 11; i++)
-    {
-        recursiveInsert(&testTree, testNum3 + i, sizeof(int), intCompare);
-    }
-    testMessage("Testing balanced -> False", avlTree(&testTree), False);
-    clearTree(&testTree);
 }
 
 void mainTest(void)
@@ -169,4 +162,6 @@ void mainTest(void)
     printf(SEPARATOR);
     test_complete();
     printf(SEPARATOR);
+    test_balanced();
+
 }
