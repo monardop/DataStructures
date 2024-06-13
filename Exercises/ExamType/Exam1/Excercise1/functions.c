@@ -7,13 +7,38 @@ void showResults(info *vec)
         printf("%s", vec->localidad);
         vec++;
     }
-
 }
+
+void moveRight(info *vec, int changes)
+{
+    for (size_t i = 4; i > changes; i--)
+    {
+        vec[i] = vec[i - 1];
+    }
+}
+
 void setVector(info *vec, int *vecSize, info *elem)
 {
-    return;
-}
+    int i = 0;
 
+    while (i < 5 && i < *vecSize)
+    {
+        if(vec->sup < elem->sup)
+        {
+            moveRight(vec, i);
+            vec[i] = *elem;
+            *vecSize += 1;
+            return;
+        }
+        i++;
+    }
+    if(*vecSize < 5)
+    {
+        vec[*vecSize] = *elem;
+        *vecSize += 1;
+        return;
+    }
+}
 
 info *ex1Main(info *vec, char *fileName)
 {
