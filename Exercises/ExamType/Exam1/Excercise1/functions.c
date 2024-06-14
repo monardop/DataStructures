@@ -1,12 +1,13 @@
 #include "excersise1.h"
 
-void showResults(info *vec)
+void showResults(info *vec, int vecSize)
 {
-    for (size_t i = 0; i < 5; i++)
+    printf("--------------------------------------------------------------\n");
+    for (size_t i = 0; i < vecSize; i++)
     {
-        printf("%s", vec->localidad);
-        vec++;
+        printf("%s - %f\n", vec[i].localidad, vec[i].sup);
     }
+    printf("--------------------------------------------------------------\n");
 }
 
 void moveRight(info *vec, int changes)
@@ -23,14 +24,16 @@ void setVector(info *vec, int *vecSize, info *elem)
 
     while (i < 5 && i < *vecSize)
     {
-        if(vec->sup < elem->sup)
+        if(vec[i].sup < elem->sup)
         {
             moveRight(vec, i);
             vec[i] = *elem;
-            *vecSize += 1;
+            if(*vecSize < 5)
+                *vecSize += 1;
             return;
         }
         i++;
+
     }
     if(*vecSize < 5)
     {
@@ -40,28 +43,27 @@ void setVector(info *vec, int *vecSize, info *elem)
     }
 }
 
-info *ex1Main(info *vec, char *fileName)
+int ex1Main(info *vec, char *fileName)
 {
     FILE *reg;
     int   vecSize = 0;
     info  auxElem;
+    char buffer[100];
+
 
     reg = fopen(fileName, "rb");
 
     if(!reg)
-        return NULL;
+        return 0;
 
-    while(!feof(reg))
+    while(fgets(buffer, sizeof(buffer), reg) != NULL)
     {
-        fscanf(reg, "%2d %50s %f %4d",
-               &auxElem.prov, &auxElem.localidad, &auxElem.sup,
-               &auxElem.population);
 
+        sscanf(buffer,"%2d %50s %f %4d", &auxElem.prov, auxElem.localidad, &auxElem.sup, &auxElem.population);
         setVector(vec, &vecSize, &auxElem);
     }
 
     fclose(reg);
-    showResults(vec);
 
-    return vec;
+    return vecSize;
 }
