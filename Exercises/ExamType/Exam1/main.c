@@ -1,8 +1,7 @@
-#include <stdio.h>
-#include <stdlib.h>
+#include "Excercise1/excersise1.h"
 
 int main()
 {
-    printf("Hello world!\n");
+    mainTest();
     return 0;
 }
