@@ -31,6 +31,13 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="Excercise1/excersise1.h" />
+		<Unit filename="Excercise1/functions.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Excercise1/testCase.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
