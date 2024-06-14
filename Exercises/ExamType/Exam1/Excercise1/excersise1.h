@@ -11,7 +11,9 @@
         int   population;
     }info;
     
-    
+    int ex1Main(info *vec, char *fileName);
+    void showResults(info *vec, int vecSize);
+    void mainTest();
 
 
 #endif // EXCERSISE1_H
