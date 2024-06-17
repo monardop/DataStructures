@@ -3,7 +3,6 @@
 
    #define MIN(X, Y) (((X)<(Y))?(X):(Y))
    #define MAX(X, Y) (((X)>(Y))?(X):(Y))
-   #define MOD(X) (X < 0)?((-X):(X))
    #define STATIC_ELEMENTS 100
 
    #define EMPTY 0
@@ -28,6 +27,7 @@
    void *memoryCopy(void *dst, const void *src, unsigned dataSize);
    int memoryCompare(const void *a, const void *b, unsigned dataSize);
    int strLen(const char *str);
+   int mod(int x);
 
    //Comparing tools
    int intCompare(void *, void *);
