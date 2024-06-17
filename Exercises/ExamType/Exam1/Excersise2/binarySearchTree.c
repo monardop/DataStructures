@@ -14,6 +14,7 @@ int addNode(tree *tp, void *info, unsigned dataSize, cmp cmp)
 {
     tNode *newNode;
     int comparation; 
+
     if (*tp == NULL)
     {
         if((newNode = (tNode *)malloc(sizeof(tNode))) == NULL ||
@@ -22,17 +23,20 @@ int addNode(tree *tp, void *info, unsigned dataSize, cmp cmp)
             free(newNode);
             return ERROR;
         }
+        
         memcpy(newNode->info, info, dataSize);
         newNode->dataSize = dataSize;
         newNode->left     = NULL;
         newNode->right    = NULL;
+        *tp               = newNode;
+
         return OK;
     }
     
     comparation = cmp((*tp)->info, info);
     if(comparation == 0)
         return DUPLICATE;
-    else if(comparation > 0)
+    else if(comparation < 0)
         return addNode(&(*tp)->right, info, dataSize, cmp);
     else
         return addNode(&(*tp)->left, info, dataSize, cmp);
@@ -59,13 +63,15 @@ void inorder(tree *tp, action func)
     inorder(&(*tp)->right, func);
 }
 
-tNode *searchNotKey(tree *tp, void *searchedValue,cmp cmp)
+tNode *searchNotKey(tree *tp, void *searchedValue, cmp cmp)
 {
     tNode *leftValue;
+    int comp; 
+
     if(*tp == NULL)
         return NULL;
-
-    if(cmp((*tp)->info, searchedValue) == 0)
+    comp = cmp((*tp)->info, searchedValue);
+    if(comp == 0)
         return *tp;
     leftValue = searchNotKey(&(*tp)->left, searchedValue, cmp);
     if(leftValue)

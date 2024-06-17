@@ -28,5 +28,6 @@
     void inorder(tree *tp, action func);
     tNode *searchNotKey(tree *tp, void *searchedValue,cmp cmp);
 
+    void ex2_testing();
 
 #endif // EXCERSISE2_H
