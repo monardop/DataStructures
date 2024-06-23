@@ -31,9 +31,14 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="circularList.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="circularList.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="testing.h" />
 		<Extensions />
 	</Project>
 </CodeBlocks_project_file>
