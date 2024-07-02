@@ -1,9 +1,6 @@
 #ifndef CIRCULARLIST_H
 #define CIRCULARLIST_H
 
-    #include <stdlib.h>
-    #include <string.h>
-
     #include "utilities.h"
 
     typedef struct sNode

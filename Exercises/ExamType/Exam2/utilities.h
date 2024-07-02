@@ -1,6 +1,9 @@
 #ifndef UTILITIES_H
 #define UTILITIES_H
 
+    #include <stdlib.h>
+    #include <string.h>
+
     #define OK         1
     #define MEM_FAIL   0
     #define FILE_FAIL -1
