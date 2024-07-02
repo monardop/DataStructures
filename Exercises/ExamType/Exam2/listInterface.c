@@ -51,19 +51,14 @@ void clearList(dsList *list)
     *list = NULL;   
 }
 
-dsList *findElem(dsList *list, const void *data, cmp cmp)
+dsList *nextElem(dsList *list, const void *data, cmp cmp)
 {
     dsList *auxList;
 
     auxList = &(*list)->next;
-    do
-    {
-        if(cmp((*auxList)->data, data) == 1)  
-            return auxList;
-
-        auxList = &(*auxList)->next;
-    } while (auxList != &(*list)->next);
-
+    if(cmp((*auxList)->data, data) == 1)  
+        return auxList;
+        
     return NULL;
 }
 

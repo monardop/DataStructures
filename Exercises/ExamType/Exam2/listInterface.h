@@ -15,7 +15,7 @@
     void newList(dsList *list);
     int insertElement(dsList *list, const void *data, const int dataSize);
     void clearList(dsList *list);
-    dsList *findElem(dsList *list, const void *data, cmp cmp);
+    dsList *nextElem(dsList *list, const void *data, cmp cmp);
     void mapList(dsList *list, action function);
 
 
