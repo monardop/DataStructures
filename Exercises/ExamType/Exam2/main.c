@@ -1,7 +1,7 @@
-#include <stdio.h>
-#include <stdlib.h>
+#include "callCenter.h"
 
 int main()
-{
+{  
+    menu();
     return 0;
 }

@@ -36,6 +36,9 @@ void clearList(dsList *list)
 {
     tNode *delNode, *auxElem;
 
+    if(*list == NULL)
+        return;
+
     auxElem = (*list)->next;
 
     do
@@ -51,7 +54,7 @@ void clearList(dsList *list)
     *list = NULL;   
 }
 
-dsList *nextElem(dsList *list, const void *data, cmp cmp)
+dsList *nextElemCheck(dsList *list, const void *data, cmp cmp)
 {
     dsList *auxList;
 
@@ -60,6 +63,11 @@ dsList *nextElem(dsList *list, const void *data, cmp cmp)
         return auxList;
         
     return NULL;
+}
+
+dsList *nextElem(dsList *list)
+{
+    return &(*list)->next;
 }
 
 void mapList(dsList *list, action function)

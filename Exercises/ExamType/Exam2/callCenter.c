@@ -49,7 +49,7 @@ int assignCall(dsList *freeWorkers)
     Employee *auxEmployee;
     char isBusy = 'n';
 
-    giveJob = nextElem(freeWorkers, (void *)&isBusy, checkDisponibility);
+    giveJob = nextElemCheck(freeWorkers, (void *)&isBusy, checkDisponibility);
 
     if (giveJob == NULL)
     {
@@ -66,21 +66,16 @@ int assignCall(dsList *freeWorkers)
 
 int endCall(dsList *onCallWorkers)
 {
-    dsList *freeWorker;
     Employee *auxEmployee;
-    char isBusy = 'y';
 
-    freeWorker = nextElem(onCallWorkers, (void *)&isBusy, checkDisponibility);
+    auxEmployee = (Employee *)(*onCallWorkers)->data;
 
-    if (freeWorker == NULL)
-    {
+    if(auxEmployee->isBusy == 'n')
         return OK;
-    }
-    onCallWorkers = freeWorker;
 
-    auxEmployee = (Employee *)(*freeWorker)->data;
     auxEmployee->isBusy = 'n';
 
+    onCallWorkers = nextElem(onCallWorkers);
     return OK;
 }
 
@@ -98,9 +93,10 @@ void printOperator(void *operator)
         printf("Free\n\n");
 }
 
-void showOperators(dsList *activeOperators)
+int showOperators(dsList *activeOperators)
 {
     mapList(activeOperators, printOperator);
+    return OK;
 }
 
 void ceaseOperations(void *operator)
@@ -109,8 +105,69 @@ void ceaseOperations(void *operator)
     actOperator->isBusy = 'n';
 }
 
-void ceaseAttention(dsList *activeOperators)
+int ceaseAttention(dsList *activeOperators)
 {
     mapList(activeOperators, ceaseOperations);
     mapList(activeOperators, printOperator);
+    return OK;
+}
+
+void printMenu(void)
+{
+    system("cls");
+
+    printf("[0] Finalizar.\n");
+    printf("[1] Cargar operadores.\n");
+    printf("[2] Asignar llamada.\n");
+    printf("\tDe no haber disponibilidad, se dara un aviso.\n");
+    printf("[3] Finalizar llamada.\n");
+    printf("[4] Mostrar operadores activos.\n");
+    printf("\tIncluye disponibles y ocupados.\n");
+    printf("[5] Cese de operaciones.\n");
+    printf("\tSe cierran todas las llamadas.\n");
+
+}
+
+void menu(void)
+{
+    int error;
+    dsList activeOperators, working, freeWorkers;
+
+    newList(&activeOperators);
+    working = activeOperators;
+    freeWorkers = activeOperators;
+    do
+    {
+        printMenu();
+        switch(validNumber(0, 5))
+        {
+            case 0:
+                clearList(&activeOperators);
+                printf("Dia finalizado. Adios!");
+                return;
+            case 1:
+                error = loadOperators(&activeOperators);
+                break;
+            case 2:
+                error = assignCall(&freeWorkers);
+                endCall(&working);
+                break;
+            case 3:
+                error = endCall(&working);
+                break;
+            case 4:
+                error = showOperators(&activeOperators);
+                endCall(&working);
+                break;
+            case 5:
+                error = ceaseAttention(&activeOperators);
+                break;
+        }
+        if(error != OK)
+            errorHandling(error);
+        
+    } while (error != MEM_FAIL || error != FILE_FAIL);
+    
+    clearList(&activeOperators);
+    printf("Dia finalizado. Adios!");
 }

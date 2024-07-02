@@ -12,7 +12,6 @@
     #define MEM_FAIL            0
     #define FILE_FAIL          -1
     #define ALL_BUSY           -2
-    #define OPERATOR_NOT_FOUND -3
 
     typedef int  (*cmp)(const void *, const void *);
     typedef void (*action)(void *);
@@ -25,6 +24,7 @@
         char isBusy;
     }Employee;
 
+    void errorHandling(const int error);
+    int validNumber(const int inf, const int sup);
     
-
 #endif // UTILITIES_H
