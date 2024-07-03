@@ -4,7 +4,8 @@ int loadOperators(dsList *activeOperators)
 {
     FILE *operators, *plus;
     Employee newEmployee;
-    unsigned sizeOfEmployeePlus;
+    plusStruct aux;
+    char buffer[30];
 
     if(*activeOperators != NULL)
     {
@@ -16,15 +17,17 @@ int loadOperators(dsList *activeOperators)
         fclose(operators);
         return FILE_FAIL;
     }
-    sizeOfEmployeePlus = sizeof(newEmployee.name) + sizeof(newEmployee.numberCalls);
 
-    while(!feof(operators) && fscanf(operators,"id nro.: %d", &newEmployee.idEmployee) != 0)
+    while(fgets(buffer,30, operators) != 0)
     {
-        fscanf(operators,"id nro.: %d", &newEmployee.idEmployee);
-        fseek(plus, (long)((newEmployee.idEmployee - 1) * sizeOfEmployeePlus), SEEK_SET);
-        fread((void *)newEmployee.name, sizeof(newEmployee.name), 1, plus);
-        fread((void *)&newEmployee.numberCalls, sizeof(int), 1, plus);
-        newEmployee.isBusy = 'n';
+        sscanf(buffer, "id nro.: %d", &newEmployee.idEmployee);
+        fseek(plus, (long)((newEmployee.idEmployee - 1) * sizeof(aux)), SEEK_SET);
+        fread((void *)&aux, sizeof(aux),1,plus);
+        
+        strcpy(newEmployee.name, aux.name);
+        newEmployee.numberCalls = aux.amountCalls;
+        newEmployee.isBusy = 0;
+
         if(insertElement(activeOperators, (void *)&newEmployee, sizeof(newEmployee)) != OK)
             return MEM_FAIL;
     }    
@@ -45,21 +48,15 @@ int checkDisponibility(const void *element, const void *parameter)
 
 int assignCall(dsList *freeWorkers)
 {
-    dsList *giveJob;
     Employee *auxEmployee;
-    char isBusy = 'n';
+    
+    auxEmployee = (Employee *)(*freeWorkers)->data;
 
-    giveJob = nextElemCheck(freeWorkers, (void *)&isBusy, checkDisponibility);
-
-    if (giveJob == NULL)
-    {
-        return ALL_BUSY;
-    }
-    freeWorkers = giveJob;
-
-    auxEmployee = (Employee *)(*giveJob)->data;
-    auxEmployee->isBusy = 'y';
-    auxEmployee->numberCalls++;
+    if(auxEmployee->isBusy == 1)
+        return ALL_BUSY;    
+    
+    auxEmployee->isBusy       = 1;
+    auxEmployee->numberCalls += 1;
 
     return OK;
 }
@@ -70,12 +67,10 @@ int endCall(dsList *onCallWorkers)
 
     auxEmployee = (Employee *)(*onCallWorkers)->data;
 
-    if(auxEmployee->isBusy == 'n')
-        return OK;
+    if(auxEmployee->isBusy == 0)
+        return NOT_BUSY;
 
-    auxEmployee->isBusy = 'n';
-
-    onCallWorkers = nextElem(onCallWorkers);
+    auxEmployee->isBusy = 0;
     return OK;
 }
 
@@ -86,11 +81,15 @@ void printOperator(void *operator)
     printf("%s", actOperator->name);
     printf("\tID: %d\n", actOperator->idEmployee);
     printf("\tNumber of calls: %d\n", actOperator->numberCalls);
-    printf("\tStatus: ");
-    if(actOperator->isBusy == 'y')
-        printf("On a call\n\n");
-    else
-        printf("Free\n\n");
+    printf("Status: ");
+    if (actOperator->isBusy == 0)
+    {
+        printf("Free.\n\n");
+    }else
+    {
+        printf("On a Call.\n");
+    }
+    printf("-----------------------------------------------------------------\n");
 }
 
 int showOperators(dsList *activeOperators)
@@ -130,16 +129,26 @@ void printMenu(void)
 
 void menu(void)
 {
-    int error;
-    dsList activeOperators, working, freeWorkers;
+    int error, selection, counter = 0;
+    dsList activeOperators;
+    dsList *working, *freeWorkers;
+
+    working = &activeOperators;
+    freeWorkers = &activeOperators;
+
+    if(createPlusFile() != OK)
+    {
+        perror("Error al crear el archivo plus.dat");
+        return;
+    }
 
     newList(&activeOperators);
-    working = activeOperators;
-    freeWorkers = activeOperators;
     do
     {
         printMenu();
-        switch(validNumber(0, 5))
+        selection= validNumber(0, 5);
+        system("cls");
+        switch(selection)
         {
             case 0:
                 clearList(&activeOperators);
@@ -149,22 +158,39 @@ void menu(void)
                 error = loadOperators(&activeOperators);
                 break;
             case 2:
-                error = assignCall(&freeWorkers);
-                endCall(&working);
+                error = assignCall(freeWorkers);
+                if(error != ALL_BUSY)
+                {
+                    freeWorkers = nextElem(freeWorkers);
+                }
                 break;
             case 3:
-                error = endCall(&working);
+                error = endCall(working);
+                if(error != NOT_BUSY)
+                {
+                    working = nextElem(working);
+                }
                 break;
             case 4:
                 error = showOperators(&activeOperators);
-                endCall(&working);
+                system("pause");
                 break;
             case 5:
                 error = ceaseAttention(&activeOperators);
+                system("pause");
                 break;
         }
+        counter++;
         if(error != OK)
             errorHandling(error);
+
+        if(counter == 3)
+        {
+            counter = 0;
+            error = endCall(working);
+            if(error != NOT_BUSY)
+                working = nextElem(working);
+        }
         
     } while (error != MEM_FAIL || error != FILE_FAIL);
     
