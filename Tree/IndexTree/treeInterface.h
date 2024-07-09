@@ -22,5 +22,8 @@
     int addElementWDuplicated(tree *tp, void *data, const int dataSize, cmp cmp, action action);
     int treeHeight(tree *tp);
     int isAVL(tree *tp);
+    void inorder(tree *tp, action function);
+    void delTree(tree *tp);
+    int delNode(tree *tp, const void *data, cmp cmp);
 
 #endif // TREEINTERFACE_H
