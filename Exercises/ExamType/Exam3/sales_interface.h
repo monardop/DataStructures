@@ -1,0 +1,6 @@
+#ifndef SALES_INTERFACE_H
+#define SALES_INTERFACE_H
+
+
+
+#endif // SALES_INTERFACE_H
