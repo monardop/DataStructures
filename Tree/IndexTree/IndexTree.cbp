@@ -31,9 +31,25 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="idexCreator.h" />
+		<Unit filename="indexCreator.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="sales.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="sales.h" />
+		<Unit filename="treeInterface.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="treeInterface.h" />
+		<Unit filename="utilities.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="utilities.h" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>

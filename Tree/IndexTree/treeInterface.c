@@ -113,3 +113,69 @@ int isAVL(tree *tp)
     return False;
 }
 
+void inorder(tree *tp, action function)
+{
+    if(*tp == NULL)
+        return;
+    
+    inorder(&(*tp)->left, function);
+    function((*tp)->data);
+    inorder(&(*tp)->right, function);
+}
+
+void delTree(tree *tp)
+{
+    if(*tp == NULL)
+        return;
+    
+    delTree(&(*tp)->left);
+    delTree(&(*tp)->right);
+    free((*tp)->data);
+    free(*tp);
+    *tp = NULL;
+}
+
+int delNode(tree *tp, const void *data, cmp cmp)
+{
+    int comparison, lBranch, rBranch; 
+    tNode *aux;
+
+    if(*tp == NULL)
+        return NOT_FOUND;
+    
+    comparison = cmp((*tp)->data, data);
+
+    if(comparison > 0)
+        return delNode(&(*tp)->right, data, cmp);
+    else if (comparison < 0)
+        return delNode(&(*tp)->left, data, cmp);
+
+    lBranch = treeHeight(&(*tp)->left);
+    rBranch = treeHeight(&(*tp)->right);
+
+    aux = *tp;
+    free(aux->data);
+    if(lBranch <= rBranch)
+    {
+        tp = &(*tp)->left;
+        while ((*tp)->right != NULL)
+        {
+            tp = &(*tp)->right;
+        }
+        aux->data = (*tp)->data;
+        aux = *tp;
+    }
+    else
+    {
+        tp = &(*tp)->right;
+        while ((*tp)->left != NULL)
+        {
+            tp = &(*tp)->left;
+        }
+        aux->data = (*tp)->data;
+        aux = *tp;
+    }
+    *tp = (aux->left)?aux->left:aux->right;
+    free(aux);
+    return 0; 
+}
