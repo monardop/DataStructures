@@ -6,12 +6,14 @@
         int day, month, year;
     } tDate;
 
-    #define OK 1
-    #define MEM_ERROR 0
+    #define NOT_EXPIRED 3
+    #define EXPIRED     2
+    #define OK          1
+    #define MEM_ERROR   0
     #define FILE_ERROR -1
 
     int  isValidDate(tDate date);
     void getExpireDate(tDate *date, int n);
-    void errorHandling(int error);
-
+    void menu();
+    
 #endif // UTILITIES_H
