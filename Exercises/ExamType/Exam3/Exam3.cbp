@@ -31,9 +31,25 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="file_handler.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="file_handler.h" />
+		<Unit filename="list_interface.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="list_interface.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="sales_interface.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="sales_interface.h" />
+		<Unit filename="utilities.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="utilities.h" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>
