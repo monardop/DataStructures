@@ -63,18 +63,30 @@ int find(dsList *pl, void *key, cmp cmp) {
     return 0;
 }
 
-void returnNdel(dsList *pl, void *key, void *container, cmp cmp) {
-    tNode *delNode;
-    while(*pl) {
-        if(cmp(key, (*pl)->data) == 0) {
-            delNode = *pl;
-            memcpy(container, delNode->data, delNode->dataSize);
-            *pl = delNode->next;
-            free(delNode->data);
-            free(delNode);
-            return;
-        }
-    }
+void returnNdel(dsList *pl, void *container) {
+    tNode *delNode = *pl;
+
+    *pl = delNode->next;
+    memcpy(container, delNode->data, delNode->dataSize);
+    free(delNode->data);
+    free(delNode);
 }
 
+void simplifyList(dsList *pl, cmp cmp, reduceFunction fuse) {
+    tNode *aux;
 
+    aux = (*pl)->next;
+    while(*pl && aux) {
+        if(cmp(aux->data, (*pl)->data) == 0) {
+            fuse((*pl)->data, aux->data);
+            (*pl)->next = aux->next;
+            free(aux->data);
+            free(aux);
+        }
+        else{
+            pl = &(*pl)->next;
+        }
+        aux = (*pl)->next;
+    }
+
+}
