@@ -86,7 +86,7 @@ int analyzeFile(tDate actDate, int n) {
     fclose(notExpired);
     fclose(stockFile);
 
-    return 0;
+    return OK;
 }
 
 int showStock(char *fileName) {
