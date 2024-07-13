@@ -13,6 +13,8 @@
     #define FAIL 0
     
     void initialize(dsStack *ps);
-    int push(dsStack *sp, void *data, int dataSize);
+    void cleanStack(dsStack *sp);
+    int  push(dsStack *sp, void *data, int dataSize);
+    int  pull(dsStack *sp, void *container);
 
 #endif // STACK_STRUCTURE_H

@@ -7,6 +7,18 @@ void initialize(dsStack *ps) {
     *ps = NULL;
 }
 
+void cleanStack(dsStack *sp) {
+    Node *delNode;
+
+    while(*sp) {
+        delNode = *sp;
+        *sp = (*sp)->next;
+
+        free(delNode->data);
+        free(delNode);
+    }
+}
+
 int push(dsStack *sp, void *data, int dataSize) {
     Node *newNode; 
     if((newNode = (Node *)malloc(sizeof(Node))) == NULL || (newNode->data = malloc(dataSize)) == NULL) {
