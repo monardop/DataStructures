@@ -58,18 +58,21 @@ int analizeFile(void) {
     initialize(&stack);
     fread(&aux, sizeof(Product), 1, baseFile);
     while (!feof(baseFile)) {
+        quantityOfProducts = 0;
         strcpy(auxCod, aux.cod);
-        while (strcmp(auxCod, aux.cod) == 0) {
+        do{
             if(aux.operation == 'I') quantityOfProducts += aux.quantity;
             else quantityOfProducts -= aux.quantity;
 
             push(&stack, &aux, sizeof(Product));
             fread(&aux, sizeof(Product), 1, baseFile);
-        }
+        }while (strcmp(auxCod, aux.cod) == 0 && !feof(baseFile)); 
         if(quantityOfProducts >= 0) updateOkFile(ok, &stack, quantityOfProducts);
         else updateProblemFile(withProblem,&stack);
     }
-    
+    fclose(withProblem);
+    fclose(baseFile);
+    fclose(ok);
     return OK;
 }
 
@@ -84,7 +87,7 @@ int printBinaryFile(char *fileName) {
         fprintf(stdout, "%s\t%s\t%d\t%c", aux.cod, aux.description, aux.quantity, aux.operation);
         fprintf(stdout,"\n");
     }
-
+    fclose(pf);
     return OK;
 }
 
@@ -98,5 +101,20 @@ int printTextFile(char *fileName) {
     while(fgets(buffer,100, pf)) {
         printf("%s", buffer);
     }
+    fclose(pf);
+    return OK;
+}
+
+int test_batch(void) {
+    Product batch[] = {{"AA", "WATER", 20, 'I'}, {"AA", "WATER", 20, 'I'}, {"AA", "WATER", 10, 'O'},
+                       {"AA", "WATER", 15, 'O'}, {"AB", "SALT", 10, 'I'}, {"AB", "SALT", 10, 'I'}, 
+                       {"AC", "COFFE", 15, 'O'}, {"AC", "COFFE", 10, 'I'}, {"AC", "COFFE", 10, 'O'}};
+    FILE *pf = checkIntegrity(MOVEMENTS_FILE, "wb");
+    if(!pf) return FAIL;
+
+    for(int i = 0; i < 9; i++) {
+        fwrite(&batch[i], sizeof(Product), 1, pf);
+    }
+    fclose(pf);
     return OK;
 }

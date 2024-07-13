@@ -16,5 +16,5 @@
     int analizeFile(void);
     int printBinaryFile(char *fileName);
     int printTextFile(char *fileName);
-
+    int test_batch(void);
 #endif // CHECK_FILE_H
