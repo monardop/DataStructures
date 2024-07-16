@@ -17,7 +17,7 @@
     #define EMPTY    -1 
 
     void initializeTree(Tree *tp);
-    void cleanTree(Tree *tp);
+    void cleanTree(Tree *tp, action function);
     void showAscendent(Tree *tp, action print);
     void showDescendant(Tree *tp, action print);
     int  newElement(Tree *tp, void *newData, unsigned dataSize, cmp compare, action function);
