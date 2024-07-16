@@ -7,14 +7,13 @@ void initializeTree(Tree *tp) {
     *tp = NULL;
 }
 
-void cleanTree(Tree *tp, action function) {
+void cleanTree(Tree *tp) {
     if(*tp == NULL)
         return;
     
-    cleanTree(&(*tp)->left, function);
-    cleanTree(&(*tp)->right, function);
+    cleanTree(&(*tp)->left);
+    cleanTree(&(*tp)->right);
 
-    function((*tp)->data);
     free((*tp)->data);
     free(*tp);
     *tp = NULL;
