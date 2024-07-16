@@ -81,34 +81,66 @@ void showDescendant(Tree *tp, action print) {
     if(*tp == NULL)
         return;
 
-    showDescendant(&(*tp)->left, print);
-    print((*tp)->data);
     showDescendant(&(*tp)->right, print);
+    print((*tp)->data);
+    showDescendant(&(*tp)->left, print);
 }
 
-void *minFunction(Tree *tp, cmp compare, void *currentMin) {
+const Tree *minElement(const Tree *tp, const Tree *lower, cmp cmp) {
     if(*tp == NULL)
-        return NULL;
+        return lower;
     
-    minFunction(&(*tp)->left,compare, currentMin);
-    minFunction(&(*tp)->right,compare, currentMin);
-    if(compare((*tp)->data, currentMin) <  0) {
-        return (*tp)->data;
+    if(cmp((*tp)->data, (*lower)->data) > 0) {
+        lower = tp;
     }
-    return currentMin;
+
+    lower = minElement(&(*tp)->left, lower, cmp);    
+    lower = minElement(&(*tp)->right, lower, cmp);    
+
+    return lower;
 }
 
-void *maxFunction(Tree *tp, cmp compare, void *currentMax) {
+int minFunction(const Tree *tp, cmp compare, void *container) {
+    const Tree *lower = tp;
     if(*tp == NULL)
-        return NULL;
+        return 0;
     
-    maxFunction(&(*tp)->left,compare, currentMax);
-    maxFunction(&(*tp)->right,compare, currentMax);
-    if(compare((*tp)->data, currentMax) >  0) {
-        return (*tp)->data;
-    }
-    return currentMax;
+    lower = minElement(&(*tp)->left, lower, compare);
+    lower = minElement(&(*tp)->right, lower, compare);
+
+    memcpy(container, (*lower)->data, (*lower)->dataSize);
+
+    return 1;
 }
+
+const Tree *maxElement(const Tree *tp, const Tree *lower, cmp cmp) {
+    if(*tp == NULL)
+        return lower;
+    
+    if(cmp((*tp)->data, (*lower)->data) < 0) {
+        lower = tp;
+    }
+
+    lower = maxElement(&(*tp)->left, lower, cmp);    
+    lower = maxElement(&(*tp)->right, lower, cmp);    
+
+    return lower;
+}
+
+int maxFunction(const Tree *tp, cmp compare, void *container) {
+    const Tree *lower = tp;
+    if(*tp == NULL)
+        return 0;
+    
+    lower = maxElement(&(*tp)->left, lower, compare);
+    lower = maxElement(&(*tp)->right, lower, compare);
+
+    memcpy(container, (*lower)->data, (*lower)->dataSize);
+
+    return 1;
+}
+
+
 
 /******************************************************************************
 * This function will print the lower or max element (not key) 
@@ -118,19 +150,18 @@ void *maxFunction(Tree *tp, cmp compare, void *currentMax) {
 * @return OK or EMPTY
 ******************************************************************************/
 
-int  showMinMaxValue(Tree *tp, cmp compare, action print, char mode) {
-    void *auxElement = (*tp)->data;
-
+int  showMinMaxValue(Tree *tp, cmp compare, action print, int mode, void *container) {
+    
     if(*tp == NULL)
         return EMPTY;
 
-    if(mode == '1') {
-        auxElement = maxFunction(tp, compare, auxElement);
+    if(mode == 1) {
+        maxFunction(tp, compare, container);
     }else {
-        auxElement = minFunction(tp, compare, auxElement);
+        minFunction(tp, compare, container);
     }
 
-    print(auxElement);
+    print(container);
     
     return OK;
 }
