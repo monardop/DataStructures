@@ -12,6 +12,9 @@
 
     #define BUFFER_LEN  100
     
+    int  getWords(FILE *fp, Tree *tp) ;
+    void printWord(void *data);
+    int  compareOccurrences(const void *word1, const void *word2);
 
 
 #endif

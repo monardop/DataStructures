@@ -25,14 +25,58 @@ int compareOccurrences(const void *word1, const void *word2) {
 
 void printWord(void *data) {
     Word *element = (Word *)data;
-    printf("Word: %s. Occurrences: %u ", element->word, element->occurrences);
+    printf("->%s - %u apariciones \n", element->word, element->occurrences);
+}
+
+void cleanWord(char *word) {
+    char  specialChars[] = ").:;,?!-'\"";
+    char *finalPointer   = strchr(word, '\0');
+    int   change         = 1;
+
+    while (finalPointer != word && change)
+    {
+        finalPointer--;
+        change = 0;
+        for (int i = 0; i < 10; i++)
+        {
+            if(*finalPointer == specialChars[i]) {
+                *finalPointer = '\0';
+                change        = 1;
+                break;
+            }
+        }
+    }
+}
+
+int isNotLetter(char *word) {
+    unsigned char special[] = "¿¡!'-,.(";
+    int count = 0, needChange = 1;
+
+    while (needChange)
+    {
+        needChange = 0;
+        for(int i = 0; i < 8; i++) {
+            if(*word == special[i]) {
+                needChange = 1;
+                count++;
+                break;
+            }
+        }
+        word++;
+    }
+    return count;
 }
 
 int createWord(char *word, unsigned len, Tree *tp) {
     Word newWord;
+    int movesFoward;
 
     newWord.occurrences = 1;
-    memcpy(newWord.word, word, len);
+
+    movesFoward = isNotLetter(word);
+
+    memcpy(newWord.word, word + movesFoward, len - movesFoward);
+    cleanWord(newWord.word);
     return newElement(tp, (void *)&newWord, sizeof(Word), compareWords, duplicatedWord);
 }
 
@@ -40,7 +84,7 @@ int parceWords(char *sentence, Tree *tp) {
     char *endp, *startp;
 
     startp = endp = strchr(sentence, '\n');
-    *endp = '\0'; 
+    *endp = '\0';
 
     while (startp != sentence){
         startp--;
@@ -49,10 +93,10 @@ int parceWords(char *sentence, Tree *tp) {
                 return MEM_ERROR;
             }
             endp = startp;
-            *endp = '\0'; 
+            *endp = '\0';
         }
     }
-    if (createWord(startp + 1, endp - startp, tp) != OK) {
+    if (createWord(startp, endp - startp, tp) != OK) {
         return MEM_ERROR;
     }
     return OK;
