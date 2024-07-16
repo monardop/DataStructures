@@ -7,6 +7,10 @@ void initializeTree(Tree *tp) {
     *tp = NULL;
 }
 
+int emptyTree(Tree *tp) {
+    return *tp == NULL;
+}
+
 void cleanTree(Tree *tp) {
     if(*tp == NULL)
         return;

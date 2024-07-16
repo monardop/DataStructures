@@ -22,5 +22,6 @@
     void showDescendant(Tree *tp, action print);
     int  newElement(Tree *tp, void *newData, unsigned dataSize, cmp compare, action function);
     int  showMinMaxValue(Tree *tp, cmp compare, action print, char mode);
+    int  emptyTree(Tree *tp);
 
 #endif
