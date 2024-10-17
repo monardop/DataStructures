@@ -1,10 +1,5 @@
+from Nodes import OnePointerNode as Node
 from random import randint
-
-
-class Node():
-    def __init__(self, data) -> None:
-        self.data = data
-        self.next = None
 
 
 class Stack():
