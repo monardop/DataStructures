@@ -26,20 +26,17 @@ int main()
 
     Consejos: Antes de escribir codigo entienda el problema y establezca una estrategia de
     solucion. Establezca tambien las divisiones y pruebe individualmente que funcionen con
-    pequeños ejemplos.
+    pequeï¿½os ejemplos.
 
     Disclaimer: Las citas no representan las opiniones de quien formulo el ejercicio :)
     */
 
     char linea[1024];
-
     obtenerLineaOfuscada(linea);
     printf("%s\n", linea);
 
-    //__desofuscar(linea);
+    __desofuscar(linea);
     printf("%s\n", linea);
-
-
 
     return 0;
 }
