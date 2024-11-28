@@ -36,11 +36,11 @@
 			<Add library="./libUtiles.a" />
 			<Add library="./libVectorGenerico.a" />
 		</Linker>
-		<Unit filename="examen.c">
-			<Option compilerVar="CC" />
-		</Unit>
 		<Unit filename="examen.h" />
 		<Unit filename="main.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="resolucion.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Extensions />
