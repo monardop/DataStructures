@@ -4,12 +4,12 @@ double mPow(float x, int power)
     short isNegative;
 
     if( power == 0 && x != 0 ) return 1;
-    if( power == 1 )           return x; 
+    if( power == 1 )           return x;
 
     isNegative = 0;
     retValue = 1;
 
-    if ( power < 0 ) 
+    if ( power < 0 )
     {
         isNegative = 1;
         power *= -1;
@@ -27,26 +27,26 @@ float absVal(float x) {
     return (x > 0) ? x: (x * -1);
 }
 
-unsigned long long factorial(int x) 
+unsigned long long factorial(int x)
 {
-    unsigned long long retValue = 1; 
+    unsigned long long retValue = 1;
 
-    for( int i = 2; i<= x; i++ ) 
+    for( int i = 2; i<= x; i++ )
     {
         retValue *= i;
     }
 
-    return retValue; 
+    return retValue;
 }
 
-double combinatoria(int m, int n) 
+double combinatoria(int m, int n)
 {
     if(m < n || n < 0) return -1;
 
     return (double)factorial(m) / (double)(factorial(n) * factorial (m - n)) ;
 }
 
-float ePotencia(int x, float tolerancia) 
+float ePotencia(int x, float tolerancia)
 {
     float retValue, curVal;
     int curPow;
@@ -59,15 +59,15 @@ float ePotencia(int x, float tolerancia)
         retValue += curVal;
         curPow++;
     }
-    
+
     return retValue;
 }
 
-float raizCuadrada(int a, float tolerancia) 
+float raizCuadrada(int a, float tolerancia)
 {
     float curValue, nextValue;
 
-    curValue = 1;   
+    curValue = 1;
     nextValue = .5 * (curValue + (a / curValue));
 
     while (absVal(curValue - nextValue) > tolerancia)
@@ -75,6 +75,24 @@ float raizCuadrada(int a, float tolerancia)
         curValue = nextValue;
         nextValue = .5 * (curValue + (a / curValue));
     }
-    
+
     return curValue;
+}
+
+short perteneceFibonacci(int x)
+{
+    int a = 0,
+        b = 1,
+        c;
+
+    while (a<= x)
+    {
+        if( x == a) return 1;
+
+        c = a + b;
+        a = b;
+        b = c;
+    }
+
+    return 0;
 }
