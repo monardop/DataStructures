@@ -23,6 +23,10 @@ double mPow(float x, int power)
     return (isNegative) ? (1 / retValue) : retValue ;
 }
 
+float absVal(float x) {
+    return (x > 0) ? x: (x * -1);
+}
+
 unsigned long long factorial(int x) 
 {
     unsigned long long retValue = 1; 
@@ -57,4 +61,20 @@ float ePotencia(int x, float tolerancia)
     }
     
     return retValue;
+}
+
+float raizCuadrada(int a, float tolerancia) 
+{
+    float curValue, nextValue;
+
+    curValue = 1;   
+    nextValue = .5 * (curValue + (a / curValue));
+
+    while (absVal(curValue - nextValue) > tolerancia)
+    {
+        curValue = nextValue;
+        nextValue = .5 * (curValue + (a / curValue));
+    }
+    
+    return curValue;
 }
